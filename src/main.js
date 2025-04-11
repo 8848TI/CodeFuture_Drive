@@ -1,5 +1,9 @@
 import '@/assets/styles/normalize.scss'
 
+// 引入bootstrap样式文件
+import 'bootstrap/dist/css/bootstrap.min.css'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
