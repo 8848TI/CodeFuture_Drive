@@ -8,18 +8,18 @@ const router = createRouter({
       redirect: '/home',
       component: () => import('@/views/layout/index.vue'),
       children: [
-        { path: '/home', component: () => import('@/views/layout/HomeView.vue') },
+        { path: 'home', component: () => import('@/views/layout/HomeView.vue') },
         {
-          path: '/blog',
+          path: 'blog',
           component: () => import('@/views/blog/index.vue'),
           children: [
-            { path: '/blog/tags', component: () => import('@/views/blog/tags.vue') },
-            { path: '/blogs/archives', component: () => import('@/views/blog/archives.vue') },
-            { path: '/blogs/categories', component: () => import('@/views/blog/categories.vue') }
+            { path: 'tags', component: () => import('@/views/blog/Tags.vue') },
+            { path: 'archives', component: () => import('@/views/blog/Archives.vue') },
+            { path: 'categories', component: () => import('@/views/blog/Categories.vue') }
           ]
         },
         {
-          path: '/article',
+          path: 'article',
           component: () => import('@/views/article/index.vue')
         }
       ]

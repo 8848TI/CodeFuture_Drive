@@ -1,14 +1,36 @@
 <script setup>
+// 定义当前年份，用于版权信息
+const currentYear = new Date().getFullYear();
 </script>
 
 <template>
-  <div id="footer-info">
-    footer-info
-  </div>
+  <!-- 底部组件，固定在底部 -->
+  <footer class="footer py-3 bg-light">
+    <div class="container text-center">
+      <!-- 联系我们部分 -->
+      <div class="row mb-3">
+        <div class="col">
+          <h5>联系我们</h5>
+          <p class="mb-1">邮箱: contact@3022926092.com</p>
+          <p class="mb-0">电话: +86 1234567890</p>
+        </div>
+      </div>
+      <!-- 版权信息部分 -->
+      <div class="row">
+        <div class="col">
+          <p class="text-muted mb-0">&copy; {{ currentYear }} 示例公司. 保留所有权利.</p>
+        </div>
+      </div>
+    </div>
+  </footer>
 </template>
 
-<style scoped lang="scss">
-#footer-info {
-  
+<style scoped>
+html, body {
+  height: 100%;
+  min-width: 320px; /* 设置最小宽度，适配移动端 */
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
 }
 </style>

@@ -1,5 +1,5 @@
 <script setup>
-import { RouterLink } from 'vue-router'
+import { RouterView } from 'vue-router'
 </script>
 
 <template>
@@ -11,6 +11,7 @@ import { RouterLink } from 'vue-router'
 
 <style lang="scss" scoped>
 #app {
-
+  // min-width: 320px;
+  
 }
 </style>
