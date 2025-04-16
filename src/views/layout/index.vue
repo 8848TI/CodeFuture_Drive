@@ -1,7 +1,6 @@
 <script setup>
 import { RouterView } from 'vue-router'
 import Navbar from './Navbar.vue'
-import FooterInfo from './FooterInfo.vue'
 </script>
 
 <template>
@@ -12,8 +11,6 @@ import FooterInfo from './FooterInfo.vue'
     <div class="flex-grow-1 overflow-auto">
       <RouterView />
     </div>
-    <!-- 页脚 -->
-    <FooterInfo />
   </div>
 </template>
 
@@ -21,6 +18,6 @@ import FooterInfo from './FooterInfo.vue'
 #layout {
   /* 确保布局不会有额外的滚动条 */
   overflow: hidden;
-  background-color: #f8f9fa;
+  background-color: var(--theme-main-bg);
 }
 </style>

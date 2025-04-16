@@ -1,5 +1,5 @@
 <script setup>
-
+import FooterInfo from '@/components/FooterInfo.vue'
 
 </script>
 const goToGithub = () => {
@@ -20,6 +20,8 @@ const goToGithub = () => {
       <a href="https://github.com/8848TI/CodeFuture_Drive" target="_blank" rel="noopener noreferrer">GitHub</a>
     </div>
   </div>
+  <!-- 页脚 -->
+  <FooterInfo style="height: 20%;"/>
 </template>
 
 <style scoped lang="scss">
@@ -28,22 +30,26 @@ const goToGithub = () => {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 100%;
+  height: 80%;
   text-align: center;
 
   .content {
     h1 {
-      font-size: 3.5rem;
+      font-size: 4rem;
       margin: 0;
+      font-weight: 800;
+      color: var(--homepage-text-level-1);
     }
 
     :nth-child(2) {
       font-size: 4rem;
+      font-weight: 800;
+      color: var(--homepage-text-level-2);
     }
 
     :nth-child(3) {
       font-size: 1rem;
-      color: #957174; 
+      color: var(--homepage-text-level-3);
     }
   }
 
@@ -59,7 +65,6 @@ const goToGithub = () => {
       padding: 0.5rem 1rem; // 统一基础内边距
       border-radius: 1.5rem;
       text-decoration: none;
-      color: #333;
       transition: background-color 0.3s ease;
       position: relative;
     }
@@ -67,22 +72,24 @@ const goToGithub = () => {
     a:nth-child(1) {
       font-weight: 700;
       letter-spacing: 0.1rem;
-      background-color: #5086a1;
-      color: #fff;
+      background-color: var(--button-primary-bg);
+      color: var(--button-primary-text);
       padding: 0.5rem 1rem; // 恢复原本的内边距，保证文字居中
 
       &:hover {
-        background-color: #6aa1b7;
+        background-color: var(--button-primary-hover);
       }
     }
 
     a:nth-child(2) {
-      background-color: #ebebef;
+      background-color: var(--button-secondary-bg);
+      color: var(--button-secondary-text);
+      padding: 0.5rem 1rem; // 恢复原本的内边距，保证文字居中
       font-weight: 400;
       padding-right: 1.5rem; // 为箭头腾出额外空间
 
       &:hover {
-        background-color: #e4e4ea;
+        background-color: var(--button-secondary-hover);
       }
 
       &::after {

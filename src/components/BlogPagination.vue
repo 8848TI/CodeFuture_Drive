@@ -34,8 +34,15 @@
     margin: 30px 0;
     padding: 0;
     border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 16px 32px rgba(90, 100, 130, .1);
+    // 使用背景颜色变量
+    background-color: var(--theme-second-bg);
+    // 使用阴影颜色变量
+    box-shadow: 1px 2px 2px var(--theme-card-highlight);
+    transition: box-shadow 0.3s ease-in-out;
+
+    &:hover {
+      box-shadow: 1px 4px 8px var(--theme-card-hover-shadow);
+    }
 
     li {
         display: flex;
@@ -49,43 +56,51 @@
 
         // 左右按钮
         &.page-btn {
-            color: #7b2d2d;
-            font-size: 22px;
+          color: var(--color-text);
+          font-size: 22px;
 
-            &.isClick {
-                color: #f0f;
-                cursor: pointer;
-                &:hover {
-                    color: #fff;
-                    background-color: #9288c0;
-                }
+          &.isClick {
+            color: var(--color-text);
+            cursor: pointer;
+            &:hover {
+                // 使用文字悬停/激活颜色变量
+                color: var(--color-text);
+                // 使用主色调变量
+                background-color: var(--theme-main-bg);
             }
+          }
         }
 
         // 页码
         &.page-number {
-          color: #f0f;
+          color: var(--color-text);
           cursor: pointer;
           &:hover {
-              color: #fff;
+              // 使用文字悬停/激活颜色变量
+              color: var(--theme-accent-color);
               font-weight: bold;
-              background-color: red;
+              // 使用主色调变量
+              background-color: var(--theme-main-bg);
           }
           // 选中状态
           &.active {
-              color: #fff;
+              // 使用文字悬停/激活颜色变量
+              color: var(--theme-accent-color);
               font-weight: bold;
-              background-color: #9288c0;
+              // 使用主色调变量
+              background-color: var(--theme-main-bg);
               cursor: default;
           }   
         }
         // 省略号
         &.page-dot {
-          color: #e0e0e0;
+          // 使用文字默认颜色变量
+          color: var(--color-text);
           font-size: 18px;
           cursor: pointer;
           &:hover {
-            color: #929292;
+            // 使用主色调变量
+            color: var(--theme-accent-color);
           }
           &::after {
             content: '···';

@@ -7,3 +7,4 @@ pinia.use(persist)
 export default pinia
 
 export * from './module/blogRoute'
+export * from './module/theme'

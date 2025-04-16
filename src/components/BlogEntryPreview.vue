@@ -46,8 +46,15 @@ const props = defineProps({
 <style scoped lang="scss">
 /* 可在此添加自定义样式 */
 .card {
- border: none;
- border-radius: 16px;
+  border: none;
+  border-radius: 16px;
+  background-color: var(--theme-second-bg);
+  box-shadow: 1px 2px 2px var(--theme-card-highlight);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+  &:hover {
+    box-shadow: 1px 4px 8px var(--theme-card-hover-shadow);
+  }
 
  .col-md-4 {
     img {
@@ -61,18 +68,31 @@ const props = defineProps({
     }
   }
 
-    .excerpt-text{
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 4; /* 控制显示的行数 */
-        overflow: hidden;
+  .col-md-8 {
+    .card-title {
+      color: var(--color-heading);
     }
 
     .text-truncate {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+
+    .excerpt-text{
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 4; /* 控制显示的行数 */
+      overflow: hidden;
+      color: var(--color-text);
+    }
+
+    .card-text  {
+      small {
+        color: var(--color-text) !important;
+      }
+    }
+  }
 
 }
 </style>

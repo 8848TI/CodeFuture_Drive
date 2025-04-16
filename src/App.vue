@@ -12,6 +12,6 @@ import { RouterView } from 'vue-router'
 <style lang="scss" scoped>
 #app {
   // min-width: 320px;
-  
+  position: relative;
 }
 </style>

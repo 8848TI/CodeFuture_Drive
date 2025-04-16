@@ -1,0 +1,56 @@
+/* 默认主题亮色 */
+:root {
+  --theme-main-bg: #f6f6f7;        /* 主要背景色 */
+  --theme-second-bg: #fff;         /* 次要背景色 */
+  --theme-accent-color: #8cccd5;   /* 点缀色 */
+  --theme-shadow-color: #e2e2e3;   /* 阴影色 */
+  --color-heading: #3c3c43;        /* 标题文字色 */
+  --color-text: #56565b;           /* 正文文字色 */
+  --icon-color: #67676c;           /* 图标颜色 */
+  --theme-card-highlight: rgba(0, 0, 0, .1); /* 卡片悬停高亮色 */
+  --theme-card-hover-shadow: rgba(0, 0, 0, 0.2); /* 卡片悬停高亮色 */
+
+  /* 首页 */
+
+  /* 首页按钮 */
+  --button-primary-bg: #5086a1;    /* 主按钮背景 */
+  --button-primary-text: #fff;     /* 主按钮文字 */
+  --button-primary-hover: #6aa1b7; /* 主按钮悬停 */
+
+  --button-secondary-bg: #ebebef;  /* 次按钮背景 */
+  --button-secondary-text: #3c3c43;/* 次按钮文字 */
+  --button-secondary-hover: #e4e4e4;/* 次按钮悬停 */
+  
+  --homepage-text-level-1: #6aa0b6;  /* 一级标题文字 */
+  --homepage-text-level-2: #63595a;  /* 二级副标题文字 */
+  --homepage-text-level-3: #6a6a7b;  /* 三级说明文字 */
+
+}
+
+/* 深色主题 */
+html[data-theme="dark"] {
+  --theme-main-bg: #161618;        /* 主要背景色 */
+  --theme-second-bg: #1b1b1f;         /* 次要背景色 */
+  --theme-accent-color: #8cccd5;   /* 点缀色 */
+  --theme-shadow-color: #101012;   /* 阴影色 */
+  --color-heading: #bacfcc;        /* 标题文字色 */
+  --color-text: #98989f;           /* 正文文字色 */
+  --icon-color: #98989f;           /* 图标颜色 */
+  --theme-card-highlight: #0e0e0f; /* 卡片悬停高亮色 */
+  --theme-card-hover-shadow: #5086a1; /* 卡片悬停高亮色 */
+
+  /* 首页 */
+
+  /* 主页按钮组 */
+  --button-primary-bg: #6aa1b7;    
+  --button-primary-text: #ffffff;  
+  --button-primary-hover: #5d90b8; 
+ 
+  --button-secondary-bg: #32363f;     
+  --button-secondary-text: #e0e0e0;
+  --button-secondary-hover: #414853;
+  
+  --homepage-text-level-1: #93a5d5;  /* 一级标题文字 */
+  --homepage-text-level-2: #909193;  /* 二级副标题文字 */
+  --homepage-text-level-3: #82595d;  /* 三级说明文字 */
+}

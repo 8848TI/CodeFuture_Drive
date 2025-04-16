@@ -25,12 +25,29 @@ const currentYear = new Date().getFullYear();
   </footer>
 </template>
 
-<style scoped>
+<style scoped lang="scss">
 html, body {
   height: 100%;
   min-width: 320px; /* 设置最小宽度，适配移动端 */
   margin: 0;
   padding: 0;
   overflow: hidden;
+
+  footer {
+    background-color: var(--theme-second-bg) !important;
+    box-shadow: 0 -1px 6px rgba(0, 0, 0, .1);
+
+  }
+
+  .row {
+    .col {
+      color: var(--color-heading) !important;
+
+      p.text-muted {
+        color: var(--color-heading)!important;
+      }
+      
+    }
+  }
 }
 </style>
