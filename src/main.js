@@ -3,11 +3,11 @@ import '@/assets/styles/normalize.scss'
 // 主题样式
 import '@/assets/styles/theme.css'
 
-
 // 引入bootstrap样式文件
 import 'bootstrap/dist/css/bootstrap.min.css'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js'
-
+// 引入bootstrap-icons样式文件
+import 'bootstrap-icons/font/bootstrap-icons.css'
 
 import { createApp } from 'vue'
 

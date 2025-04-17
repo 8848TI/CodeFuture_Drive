@@ -25,6 +25,10 @@
   --homepage-text-level-2: #63595a;  /* 二级副标题文字 */
   --homepage-text-level-3: #6a6a7b;  /* 三级说明文字 */
 
+    /* 登录页码 */
+    --button-login-bg: #5086a1;    /* 登录按钮背景 */
+    --button-login-text: #fff;     /* 登录按钮文字 */
+
 }
 
 /* 深色主题 */
@@ -53,4 +57,9 @@ html[data-theme="dark"] {
   --homepage-text-level-1: #93a5d5;  /* 一级标题文字 */
   --homepage-text-level-2: #909193;  /* 二级副标题文字 */
   --homepage-text-level-3: #82595d;  /* 三级说明文字 */
+
+  /* 登录页码 */
+  --button-login-bg: #5086a1;    /* 登录按钮背景 */
+  --button-login-text: #000;     /* 登录按钮文字 */
+
 }

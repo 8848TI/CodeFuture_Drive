@@ -1,7 +1,6 @@
 <script setup>
 import { RouterView,useRoute } from 'vue-router'
 import BlogEntryPreview from '@/components/BlogEntryPreview.vue'
-import 'bootstrap-icons/font/bootstrap-icons.css'
 import { ref, watch } from 'vue'
 import Pagination from '@/components/BlogPagination.vue'
 import { useBlogRoute } from '@/stores/index'
