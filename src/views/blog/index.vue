@@ -1,11 +1,13 @@
 <script setup>
 import { RouterView,useRoute } from 'vue-router'
+import { watch } from 'vue'
+
 import BlogEntryPreview from '@/components/BlogEntryPreview.vue'
-import { ref, watch } from 'vue'
-import Pagination from '@/components/BlogPagination.vue'
-import { useBlogRoute } from '@/stores/index'
-import FooterInfo from '../../components/FooterInfo.vue'
+import BlogPagination from '@/components/BlogPagination.vue'
 import GoTop from '@/components/GoTop.vue'
+import FooterInfo from '../../components/FooterInfo.vue'
+
+import { useBlogRoute } from '@/stores/index'
 
 // 同过监听导航来控制是否显示三级路由
 const blogRoute = useBlogRoute()
@@ -33,7 +35,7 @@ watch(() => route.fullPath, (newPath) => {
             imageUrl="../../assets/images/07.jpg"
           />
           <!-- 分页功能开始 -->
-          <Pagination class="col-lg-9"/>
+          <BlogPagination class="col-lg-9"/>
           <!-- 分页功能结束 -->
         </div>
         <!-- 右侧固定栏开始 -->

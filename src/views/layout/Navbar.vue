@@ -1,5 +1,11 @@
 <script setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
+import { useUserStore } from '@/stores/index'
+import UserInfoLogo from '@/components/UserInfoLogo.vue'
+
+const router = useRouter()
+const userStore = useUserStore()
 
 // 普通导航项
 const normalNavItems = [
@@ -71,6 +77,7 @@ const isDarkTheme = ref(theme.theme === 'light')
 const themeSwitch = () => {
   theme.toggleTheme()
 }
+
 
 </script>
 
@@ -144,6 +151,9 @@ const themeSwitch = () => {
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
+          <!-- 用户信息logo开始 -->
+          <UserInfoLogo item="个人空间" address="/user"/>
+          <!-- 用户信息logo结束 -->
         </div>
       </div>
     </nav>
@@ -303,6 +313,7 @@ const themeSwitch = () => {
       top: calc(50% - 10px);
     }
     // 主题色切换样式结束
+    
   }
 }
 </style>

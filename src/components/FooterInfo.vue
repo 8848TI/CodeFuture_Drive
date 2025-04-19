@@ -11,7 +11,7 @@ const currentYear = new Date().getFullYear();
       <div class="row mb-3">
         <div class="col">
           <h5>联系我们</h5>
-          <p class="mb-1">邮箱: contact@3022926092.com</p>
+          <p class="mb-1">邮箱: 3022926092@qq.com</p>
           <p class="mb-0">电话: +86 1234567890</p>
         </div>
       </div>
