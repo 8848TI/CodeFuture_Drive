@@ -1,56 +1,58 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue'
+import { Top } from '@element-plus/icons-vue'
 
-// 用于控制按钮的显示与隐藏
-const isVisible = ref(false);
+// 图标大小
+const size = ref(25) 
+// 控制是否显示回到顶部按钮
+const isVisible = ref(true) 
 
-// 处理滚动事件
-const handleScroll = () => {
-  // 当滚动距离超过 300px 时显示按钮
-  isVisible.value = window.scrollY > 300;
-};
-
-// 点击按钮时滚动到页面顶部
-const scrollToTop = () => {
+// 定义回到顶部的方法
+const goToTop = () => {
   window.scrollTo({
     top: 0,
-    behavior: 'smooth'
-  });
-};
+    behavior: 'smooth' // 平滑滚动
+  })
+}
 
+// 处理滚动事件，判断是否显示按钮
+const handleScroll = () => {
+  isVisible.value = window.pageYOffset > 200 // 当滚动距离超过 200px 时显示
+}
+
+// 组件挂载时添加滚动事件监听
 onMounted(() => {
-  window.addEventListener('scroll', handleScroll);
-});
+  window.addEventListener('scroll', handleScroll)
+})
 
+// 组件卸载时移除滚动事件监听
 onUnmounted(() => {
-  window.removeEventListener('scroll', handleScroll);
-});
+  window.removeEventListener('scroll', handleScroll)
+})
 </script>
 
 <template>
-  <div id="go-top">
-    <button
-        v-if="isVisible"
-        @click="scrollToTop"
-        type="button"
-        class="btn btn-primary btn-floating"
-        style="position: fixed; bottom: 20px; right: 20px; z-index: 999;"
-    >
-        <i class="bi bi-arrow-up">a</i>
-    </button>
+  <div v-if="isVisible" id="go-top" @click="goToTop">
+    <el-icon :size="size" color="var(--icon-color)"><Top /></el-icon>
   </div>
 </template>
 
 <style lang="scss" scoped>
-/* 可以在这里添加额外的自定义样式 */
 #go-top {
-  /* 可以添加一些样式 */
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  z-index: 999;
-  width: 20px;
-  height: 20px;
-  background-color: #333;
+  position: fixed;
+  right: 5%;
+  bottom: 5%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all 0.3s ease;
+  border: 2px solid var(--icon-color);
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+}
+
+#go-top:hover {
+  opacity: 0.8;
 }
 </style>

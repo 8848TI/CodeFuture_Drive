@@ -32,6 +32,7 @@
     align-items: center;
     height: 50px;
     margin: 30px 0;
+    margin-bottom: 0;
     padding: 0;
     border-radius: 8px;
     // 使用背景颜色变量

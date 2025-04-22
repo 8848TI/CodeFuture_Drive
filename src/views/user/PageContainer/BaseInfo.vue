@@ -54,8 +54,7 @@ const submitForm = async () => {
             :rules="rules"
             ref="formRef"
             label-width="100px"
-            size="large"
-          >
+            size="large">
             <el-form-item label="登录名称">
               <el-input v-model="userInfo.username" disabled></el-input>
             </el-form-item>
@@ -78,13 +77,27 @@ const submitForm = async () => {
 
 <style lang="scss">
 #user-info {
-  .el-row {
-    justify-content: center;
+  .page-container {
+    background: var(--theme-second-bg);
+    border: 1px solid var(--theme-main-bg);
 
-    .el-col-12 {
-      flex: 0 0 60%;
-      max-width: 60%;
+    .el-card__header {
+      // border: 1px solid var(--theme-main-bg);
     }
+
+    .el-row {
+      justify-content: center;
+
+      .el-col-12 {
+        flex: 0 0 60%;
+        max-width: 60%;
+
+        // 输入框背景色
+        .el-input__wrapper {
+          background: var(--theme-second-bg);
+        }
+      }
+    } 
   }
 }
 </style>

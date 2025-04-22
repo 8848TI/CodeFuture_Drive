@@ -2,6 +2,7 @@
 import BaseInfo from './PageContainer/BaseInfo.vue'
 import ChangeAvatar from './PageContainer/ChangeAvatar.vue'
 import ResetPassword from './PageContainer/ResetPassword.vue'
+import SliderNavbar from './SliderNavbar.vue'
 </script>
 
 <template>
@@ -24,6 +25,7 @@ import ResetPassword from './PageContainer/ResetPassword.vue'
         </div>
       </el-col>
     </el-row>
+    <SliderNavbar />
   </div>
 </template>
 

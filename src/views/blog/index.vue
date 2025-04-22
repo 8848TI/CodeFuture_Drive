@@ -106,12 +106,11 @@ watch(() => route.fullPath, (newPath) => {
         </div>
         <!-- 右侧固定栏结束 -->
       </div>
+      <GoTop/>
     </main>
   </div>
   <!-- 页脚 -->
   <FooterInfo />
-  <!-- 回到顶部 -->
-  <GoTop />
 </template>
 
 <style scoped lang="scss">
@@ -124,96 +123,101 @@ a {
   margin: 0 auto;
   padding: 20px;
 
-  .right {
+  .container {
     position: relative;
+    .row {
+      .right {
+        position: relative;
 
-    .aside {
-     position: sticky;
-     top: 20px;
+        .aside {
+          position: sticky;
+          top: 20px;
 
-      // 介绍区域样式开始
-      .introduce {
-        background-color: var(--theme-second-bg);
-        box-shadow: 1px 2px 2px var(--theme-card-highlight);
-        transition: box-shadow 0.3s ease-in-out;
+          // 介绍区域样式开始
+          .introduce {
+            background-color: var(--theme-second-bg);
+            box-shadow: 1px 2px 2px var(--theme-card-highlight);
+            transition: box-shadow 0.3s ease-in-out;
 
-        &:hover {
-          box-shadow: 1px 4px 8px var(--theme-card-hover-shadow);
-        }
-
-        .profile-info {
-          h3 {
-            color: var(--color-heading);
-          }
-
-          p {
-            color: var(--color-text);
-          }
-        }
-
-        .profile-social {
-          display: flex;
-          justify-content: center;
-          gap: 1rem;
-          
-          a {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            color: var(--icon-color);
-
-            i {
-              font-size: 1.5rem;
+            &:hover {
+              box-shadow: 1px 4px 8px var(--theme-card-hover-shadow);
             }
-          }
-        }
-      }
-      // 介绍区域样式结束
-      // 导航栏样式开始 
-      .navbar {
-        width: 100%;
-        height: 100%;
-        border-radius: 16px;
-        
 
-        ul {
-          margin: 0;
-          display: grid;
-          grid-template-columns: 1fr;
-          grid-template-rows: 1fr 1fr 1fr;
-          width: 100%;
-          padding: 0;
+            .profile-info {
+              h3 {
+                color: var(--color-heading);
+              }
 
-          a {
-            li {
-              width: 100%;
-              padding: 1rem;
-              margin: .6rem 0;
-              border-radius: 12px;
-              background-color: var(--theme-second-bg);
-              display: grid;
-              grid-template-rows: 1fr;
-              grid-template-columns: 1fr 9fr 1fr 1fr;
-              align-items: center;
-              justify-content: space-between;
-              color: #5086a1;
-              box-shadow: 1px 2px 2px var(--theme-card-highlight);
-              transition: box-shadow 0.3s ease-in-out;
+              p {
+                color: var(--color-text);
+              }
+            }
+
+            .profile-social {
+              display: flex;
+              justify-content: center;
+              gap: 1rem;
               
-              &:hover {
-                box-shadow: 1px 4px 8px var(--theme-card-hover-shadow); 
+              a {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                color: var(--icon-color);
+
+                i {
+                  font-size: 1.5rem;
+                }
               }
             }
           }
-        }
-       
-      }
-      // 导航栏样式结束
+          // 介绍区域样式结束
+          // 导航栏样式开始 
+          .navbar {
+            width: 100%;
+            height: 100%;
+            border-radius: 16px;
+            
 
-     .card {
-      border: none;
-      border-radius: 16px;
-     }
+            ul {
+              margin: 0;
+              display: grid;
+              grid-template-columns: 1fr;
+              grid-template-rows: 1fr 1fr 1fr;
+              width: 100%;
+              padding: 0;
+
+              a {
+                li {
+                  width: 100%;
+                  padding: 1rem;
+                  margin: .6rem 0;
+                  border-radius: 12px;
+                  background-color: var(--theme-second-bg);
+                  display: grid;
+                  grid-template-rows: 1fr;
+                  grid-template-columns: 1fr 9fr 1fr 1fr;
+                  align-items: center;
+                  justify-content: space-between;
+                  color: #5086a1;
+                  box-shadow: 1px 2px 2px var(--theme-card-highlight);
+                  transition: box-shadow 0.3s ease-in-out;
+                  
+                  &:hover {
+                    box-shadow: 1px 4px 8px var(--theme-card-hover-shadow); 
+                  }
+                }
+              }
+            }
+          
+          }
+          // 导航栏样式结束
+
+        .card {
+          border: none;
+          border-radius: 16px;
+        }
+        }
+      }
     }
   }
 }

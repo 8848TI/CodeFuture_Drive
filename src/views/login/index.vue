@@ -4,6 +4,12 @@ import { useRouter } from 'vue-router'
 
 const router = useRouter()
 
+// 游客登录
+const goHome = () => {
+  // 加载3秒
+  
+}
+
 // 登录和注册界面切换
 const container = ref(null)
 const registerBtn = ref(null)
@@ -63,7 +69,7 @@ const submitRegisterForm = () => {
           <div class="social-icons">
             <router-link to="#"><i class="bi bi-github"></i></router-link>
             <router-link to="#"><i class="bi bi-google"></i></router-link>
-            <router-link to="#"><i class="bi bi-facebook"></i></router-link>            
+            <router-link @click="goHome" to="/home"><i class="bi bi-person-circle"></i></router-link>        
           </div>
         </form>
       </div>
@@ -89,7 +95,7 @@ const submitRegisterForm = () => {
           <div class="social-icons">
             <router-link to="#"><i class="bi bi-github"></i></router-link>
             <router-link to="#"><i class="bi bi-google"></i></router-link>
-            <router-link to="#"><i class="bi bi-facebook"></i></router-link>            
+            <router-link @click="goHome" to="/home"><i class="bi bi-person-circle"></i></router-link>            
           </div>
         </form>
       </div>

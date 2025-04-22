@@ -33,6 +33,17 @@ const router = createRouter({
       ]
     },
     {
+      path: '/admin',
+      component: () => import('@/views/admin/index.vue'),
+      children: [
+        { path: '', component: () => import('@/views/admin/HomeManagement.vue') },
+        { path: 'blogmanagement', component: () => import('@/views/admin/BlogManagement.vue') },
+        { path: 'categorymanagement', component: () => import('@/views/admin/CategoryManagement.vue') },
+        { path: 'reviewsmanagement', component: () => import('@/views/admin/ReviewsManagement.vue') },
+        { path:'usermanagement', component: () => import('@/views/admin/UserManagement.vue') }
+      ]
+    },
+    {
       path: '/login',
       component: () => import('@/views/login/index.vue')
     }

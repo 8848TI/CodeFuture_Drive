@@ -2,8 +2,8 @@
 
 // 普通导航项
 const normalNavItems = [
-  { text: '个人空间', to: '/user', active: true },
-  { text: '文章', to: '/user/personalarticel' },
+  { text: '博客文章', to: '/user', active: true },
+  { text: '文章分类', to: '/user/personalarticel' },
   { text: '修改信息', to: '/user/userinfo' }
 ]
 
