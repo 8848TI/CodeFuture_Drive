@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import axios from 'axios'
 
 const router = useRouter()
 
@@ -44,6 +45,19 @@ const submitRegisterForm = () => {
   console.log('注册表单提交')
 }
 
+// github登录
+const btnGithubLogin = () => {
+  // //http://127.0.0.1:3007/api/8848TI/github
+  // window.location.href = 'http://127.0.0.1:3007/api/8848TI/github'
+
+  // axios.get('').then(res => {
+  //   console.log(res)
+  // }).catch(err => {
+  //   console.log('错误：' + err)
+  // })
+}
+
+
 </script>
 
 <template>
@@ -67,7 +81,7 @@ const submitRegisterForm = () => {
           <button @click="submitLoginForm" type="submit" class="btn">登录</button>
           <p>其它登录方式</p>
           <div class="social-icons">
-            <router-link to="#"><i class="bi bi-github"></i></router-link>
+            <router-link @click="btnGithubLogin" to="#"><i class="bi bi-github"></i></router-link>
             <router-link to="#"><i class="bi bi-google"></i></router-link>
             <router-link @click="goHome" to="/home"><i class="bi bi-person-circle"></i></router-link>        
           </div>

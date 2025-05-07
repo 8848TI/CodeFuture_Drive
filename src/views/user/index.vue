@@ -40,9 +40,9 @@ watch(() => route.fullPath, (newPath) => {
   <div id="user">
     <!-- 顶部开始 -->
     <div class="top">
-      <div class="top-navbar">
+      <!-- <div class="top-navbar">
         <UserInfoLogo class="user-info" item="回到首页" address="/home"/>
-      </div>
+      </div> -->
       <div ref="TopBg" class="top-bg main"></div>
     </div>
     <!-- 顶部结束 -->
@@ -105,6 +105,8 @@ watch(() => route.fullPath, (newPath) => {
       width: 100%;
       height: 400px;
       background-size: cover;
+      z-index: 0;
+      position: relative;
     }
   }
 

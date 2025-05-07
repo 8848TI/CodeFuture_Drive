@@ -2,13 +2,16 @@
 import { shallowRef, onMounted, ref } from 'vue'
 import { useThemeStore } from '@/stores'
 import { Sunny, Moon } from '@element-plus/icons-vue'
-import { Top } from '@element-plus/icons-vue' // 引入  里用到的图标
+import { Top } from '@element-plus/icons-vue'
+import { useRoute } from 'vue-router'
+const route = useRoute()
 
 const size = shallowRef(25)
 const themeIcon = shallowRef(Sunny)
 
 const theme = useThemeStore()
 
+// 定义切换主题的方法
 const themeSwitch = () => {
   theme.toggleTheme()
   // 修改图标
@@ -28,9 +31,8 @@ onMounted(() => {
   }
 })
 
-// 合并 GoTop.vue 的逻辑
-const goTopSize = ref(25); // 图标大小
 
+const goTopSize = ref(25); // 图标大小
 // 定义回到顶部的方法
 const goToTop = () => {
   window.scrollTo({
@@ -38,18 +40,36 @@ const goToTop = () => {
     behavior: 'smooth' // 平滑滚动
   })
 }
+
+// 添加文章
+const addArticle = () => {
+  // route.push('/addarticle')
+  window.location.href = '/addarticle'
+}
+
+// 回到首页
+const goHome = () => {
+  window.location.href = '/home'
+}
+
+// 退出登录
+const leave = () => {
+  // localStorage.removeItem('token')
+  route.push('/login')
+}
 </script>
 
 <template>
   <div id="slider-navbar">
     <ul>
-        <li><el-icon :size="size" color="var(--icon-color)"><CirclePlus /></el-icon></li> 
-        <!-- 动态绑定图标组件 -->
-        <li @click="themeSwitch"><el-icon :size="size" color="var(--icon-color)"><component :is="themeIcon" /></el-icon></li> 
-        <!-- 合并 GoTop.vue 的模板部分 -->
-        <li id="go-top" @click="goToTop">
-          <el-icon :size="goTopSize" color="var(--icon-color)"><Top /></el-icon>
-        </li>
+      <li @click="addArticle"><el-icon :size="size" color="var(--icon-color)"><CirclePlus /></el-icon></li> 
+      <li @click="goHome"><el-icon :size="size" color="var(--icon-color)"><HomeFilled /></el-icon></li> 
+      <li @click="leave"><i class="bi bi-door-open" style="color: var(--icon-color);"></i></li> 
+      <!-- 动态绑定图标组件 -->
+      <li @click="themeSwitch"><el-icon :size="size" color="var(--icon-color)"><component :is="themeIcon" /></el-icon></li> 
+      <li id="go-top" @click="goToTop">
+        <el-icon :size="goTopSize" color="var(--icon-color)"><Top /></el-icon>
+      </li>
     </ul>
   </div>
 </template>
