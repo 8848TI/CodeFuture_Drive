@@ -9,6 +9,7 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 // 引入bootstrap-icons样式文件
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
+// 引入element-plus图标库
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
 import { createApp } from 'vue'

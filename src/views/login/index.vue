@@ -83,7 +83,13 @@ const btnGithubLogin = () => {
           <div class="social-icons">
             <router-link @click="btnGithubLogin" to="#"><i class="bi bi-github"></i></router-link>
             <router-link to="#"><i class="bi bi-google"></i></router-link>
-            <router-link @click="goHome" to="/home"><i class="bi bi-person-circle"></i></router-link>        
+            <el-popover
+            placement="bottom-end"
+            content="游客进入，免登录">
+              <template #reference>
+                <router-link @click="goHome" to="/home"><i class="bi bi-person-circle"></i></router-link>   
+              </template>
+            </el-popover>
           </div>
         </form>
       </div>
@@ -109,7 +115,13 @@ const btnGithubLogin = () => {
           <div class="social-icons">
             <router-link to="#"><i class="bi bi-github"></i></router-link>
             <router-link to="#"><i class="bi bi-google"></i></router-link>
-            <router-link @click="goHome" to="/home"><i class="bi bi-person-circle"></i></router-link>            
+            <el-popover
+            placement="bottom-end"
+            content="游客进入，免登录">
+              <template #reference>
+                <router-link @click="goHome" to="/home"><i class="bi bi-person-circle"></i></router-link>   
+              </template>
+            </el-popover>            
           </div>
         </form>
       </div>
