@@ -4,6 +4,7 @@ import 'vditor/dist/index.css'
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus' // 引入 Element Plus 消息提示
+import DOMpurify from 'dompurify'
 
 // 初始化 Vditor 编辑器
 const vditor = ref()
@@ -82,6 +83,12 @@ const publishBlog = () => {
 
 // 实际发布博客的函数
 const submitPublishForm = () => {
+  // 拿到markkdown格式的内容
+  const markdownContent = vditor.value.getValue()
+  // 过滤用户输入的 HTML
+  // const cleanHTML = DOMPurify.sanitize(markdownContent)
+  console.log('cleanHTML', markdownContent)
+  // console.log('markdownContent', markdownContent)
   console.log('实际发布博客操作', form.value)
   alert('实际发布博客操作')
   showPublishForm.value = false

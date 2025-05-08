@@ -1,14 +1,26 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import axios from 'axios'
+import { userLogin, userRegister } from '@/api/userService'
+import { useUserStore } from '@/stores/index'
+import { ElLoading } from 'element-plus'
 
 const router = useRouter()
 
 // 游客登录
-const goHome = () => {
+const goHome = (event) => {
+  // 阻止表单默认提交行为
+  event.preventDefault()
   // 加载3秒
-  
+  const loading = ElLoading.service({
+    lock: true,
+    text: '加载中……',
+    background: 'rgba(0, 0, 0, 0.7)'
+  })
+  setTimeout(() => {
+    loading.close()
+    router.push('/home')
+  }, 3000)
 }
 
 // 登录和注册界面切换
@@ -27,13 +39,33 @@ onMounted(() => {
 })
 
 // 登录表单提交
-const loginUsername = ref(null)
-const loginPassword = ref(null)
+const loginUsername = ref('hngy01')
+const loginPassword = ref('rjxh2025')
 
-const submitLoginForm = () => {
-  console.log('登录表单提交')
-  // 前往首页
-  router.push('/user')
+const submitLoginForm = async (event) => {
+  // 阻止表单默认提交行为
+  event.preventDefault()
+  try {
+    const { data } = await userLogin({
+      username: loginUsername.value,
+      password: loginPassword.value
+    })
+    if (data.status === 0) {
+      // 登录成功，更新用户状态
+      const userStore = useUserStore()
+      data.role = data.is_admin === 0 ? 'user' : 'admin'
+      userStore.login(data)
+      userStore.setToken(data.token)
+      console.log('登录成功:', data)
+      router.push('/home')
+      console.log(userStore.userInfo)
+    } else {
+      alert(data.msg || '登录失败，请检查用户名和密码')
+    }
+  } catch (error) {
+    console.error('登录请求出错:', error)
+    alert('登录请求出错，请稍后重试')
+  }
 }
 
 // 注册表单提交
@@ -42,6 +74,8 @@ const registerPassword = ref(null)
 const registerConfirmPassword = ref(null)
 
 const submitRegisterForm = () => {
+  // 阻止表单默认提交行为
+  event.preventDefault()
   console.log('注册表单提交')
 }
 
@@ -68,17 +102,17 @@ const btnGithubLogin = () => {
         <form action="">
           <h1>登录</h1>
           <div class="input-box">
-            <input type="text" placeholder="账号" required autocomplete="username">
+            <input v-model="loginUsername" type="text" placeholder="账号" required autocomplete="username">
             <i class="bi bi-person"></i>
           </div>
           <div class="input-box">
-            <input type="password" placeholder="密码" required autocomplete="current-password">
+            <input v-model="loginPassword" type="password" placeholder="密码" required autocomplete="current-password">
             <i class="bi bi-lock"></i>
           </div>
           <div class="forgot-link">
             <router-link to="#">忘记密码？</router-link>
           </div>
-          <button @click="submitLoginForm" type="submit" class="btn">登录</button>
+          <button @click="submitLoginForm" class="btn">登录</button>
           <p>其它登录方式</p>
           <div class="social-icons">
             <router-link @click="btnGithubLogin" to="#"><i class="bi bi-github"></i></router-link>
@@ -87,7 +121,7 @@ const btnGithubLogin = () => {
             placement="bottom-end"
             content="游客进入，免登录">
               <template #reference>
-                <router-link @click="goHome" to="/home"><i class="bi bi-person-circle"></i></router-link>   
+                <router-link @click="goHome" to="#"><i class="bi bi-person-circle"></i></router-link>   
               </template>
             </el-popover>
           </div>
@@ -119,7 +153,7 @@ const btnGithubLogin = () => {
             placement="bottom-end"
             content="游客进入，免登录">
               <template #reference>
-                <router-link @click="goHome" to="/home"><i class="bi bi-person-circle"></i></router-link>   
+                <router-link @click="goHome" to="#"><i class="bi bi-person-circle"></i></router-link>   
               </template>
             </el-popover>            
           </div>

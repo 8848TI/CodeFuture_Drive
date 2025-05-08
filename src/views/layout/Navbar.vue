@@ -78,6 +78,11 @@ const themeSwitch = () => {
   theme.toggleTheme()
 }
 
+const userInfoLogo = [
+  { text: '个人空间', to: '/user' },
+  { text: '管理博客', to: '/admin' }
+]
+
 
 </script>
 
@@ -152,7 +157,7 @@ const themeSwitch = () => {
             <button class="btn btn-outline-success" type="submit">Search</button>
           </form>
           <!-- 用户信息logo开始 -->
-          <UserInfoLogo item="个人空间" address="/user"/>
+          <UserInfoLogo :arr = "userInfoLogo"/>
           <!-- 用户信息logo结束 -->
         </div>
       </div>

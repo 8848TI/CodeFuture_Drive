@@ -21,7 +21,7 @@ const login = () => {
   // 前往登录界面
   router.push({ path: '/login' })
 
-  userStore.login({ avatar: avatarImg })
+  // userStore.login({ avatar: avatarImg })
 }
 
 const logout = () => {
@@ -30,15 +30,15 @@ const logout = () => {
 
 // 定义组件的props
 const props = defineProps({
-  item: {
-    type: String,
-    default: '开发者……'
-  },
-  address: {
-    type: String,
-    default: '/home'
+  arr: {
+    type: Array,
+    default: () => [
+      { text: '个人空间', to: '/user' },
+      { text: '管理博客', to: '/admin' }
+    ]
   }
 })
+console.log(typeof(userStore.userInfo.role))
 </script>
 
 <template>
@@ -62,12 +62,15 @@ const props = defineProps({
       </div>
     </a>
     <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu">
-      <li v-if="userStore.isLoggedIn">
-        <router-link class="dropdown-item user-dropdown-item" :to="address">
-          <i class="bi bi-person-lines-fill me-2"></i>{{ item }}
+      <li v-if="userStore.token">
+        <router-link v-if="userStore.userInfo.role === 'admin'" class="dropdown-item user-dropdown-item" :to="arr[1].to">
+          <i class="bi bi-person-lines-fill me-2"></i>{{ arr[1].text }}
+        </router-link>
+        <router-link v-else class="dropdown-item user-dropdown-item" :to="arr[0].to">
+          <i class="bi bi-person-lines-fill me-2"></i>{{ arr[0].text }}
         </router-link>
       </li>
-      <li v-if="userStore.isLoggedIn">
+      <li v-if="userStore.token">
         <a class="dropdown-item user-dropdown-item" @click="logout">
           <i class="bi bi-box-arrow-right me-2"></i>退出登录
         </a>
