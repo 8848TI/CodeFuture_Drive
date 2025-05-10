@@ -105,35 +105,35 @@ const router = createRouter({
   ],
 })
 // 全局前置守卫
-router.beforeEach((to, from, next) => {
-  const userStore = useUserStore()
-  const requiredRoles = to.meta.roles
-  const isLoggedIn = userStore.isLoggedIn
+// router.beforeEach((to, from, next) => {
+//   const userStore = useUserStore()
+//   const requiredRoles = to.meta.roles
+//   const isLoggedIn = userStore.isLoggedIn
 
-  // 如果用户已经登录且尝试访问登录页面，重定向到首页
-  if (isLoggedIn && to.path === '/login') {
-    next('/')
-    return
-  }
+//   // 如果用户已经登录且尝试访问登录页面，重定向到首页
+//   if (isLoggedIn && to.path === '/login') {
+//     next('/')
+//     return
+//   }
 
-  // 如果路由需要权限
-  if (requiredRoles) {
-    // 未登录，重定向到登录页
-    if (!isLoggedIn) {
-      next('/login')
-      return
-    }
+//   // 如果路由需要权限
+//   if (requiredRoles) {
+//     // 未登录，重定向到登录页
+//     if (!isLoggedIn) {
+//       next('/login')
+//       return
+//     }
 
-    // 检查用户是否有访问权限
-    const hasRole = requiredRoles.includes(userStore.userInfo.role)
-    if (hasRole) {
-      next()
-    } else {
-      next('/') // 没有权限，重定向到首页
-    }
-  } else {
-    next() // 没有设置权限，直接放行
-  }
-})
+//     // 检查用户是否有访问权限
+//     const hasRole = requiredRoles.includes(userStore.userInfo.role)
+//     if (hasRole) {
+//       next()
+//     } else {
+//       next('/') // 没有权限，重定向到首页
+//     }
+//   } else {
+//     next() // 没有设置权限，直接放行
+//   }
+// })
 
 export default router

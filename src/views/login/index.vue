@@ -53,12 +53,11 @@ const submitLoginForm = async (event) => {
     if (data.status === 0) {
       // 登录成功，更新用户状态
       const userStore = useUserStore()
-      data.role = data.is_admin === 0 ? 'user' : 'admin'
-      userStore.login(data)
+      userStore.setRole(data.is_admin === 0 ? 'user' : 'admin')
+      userStore.login()
       userStore.setToken(data.token)
-      console.log('登录成功:', data)
-      router.push('/home')
       console.log(userStore.userInfo)
+      router.push('/home')
     } else {
       alert(data.msg || '登录失败，请检查用户名和密码')
     }

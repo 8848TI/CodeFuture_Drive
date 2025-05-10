@@ -38,7 +38,6 @@ const props = defineProps({
     ]
   }
 })
-console.log(typeof(userStore.userInfo.role))
 </script>
 
 <template>
@@ -63,7 +62,7 @@ console.log(typeof(userStore.userInfo.role))
     </a>
     <ul class="dropdown-menu dropdown-menu-end user-dropdown-menu">
       <li v-if="userStore.token">
-        <router-link v-if="userStore.userInfo.role === 'admin'" class="dropdown-item user-dropdown-item" :to="arr[1].to">
+        <router-link v-if="userStore.role === 'admin'" class="dropdown-item user-dropdown-item" :to="arr[1].to">
           <i class="bi bi-person-lines-fill me-2"></i>{{ arr[1].text }}
         </router-link>
         <router-link v-else class="dropdown-item user-dropdown-item" :to="arr[0].to">

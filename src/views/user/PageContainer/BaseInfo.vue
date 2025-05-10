@@ -8,12 +8,13 @@ const {
   getUserInfo
 } = useUserStore()
 
-const userInfo = ref({
+const user = ref({
   username,
   nickname,
-  email, 
+  email,
+  id
 })
-
+console.log(useUserStore().userInfo)
 
 const rules = {
   nickname: [
@@ -32,13 +33,17 @@ const rules = {
 
 const formRef = ref()
 
+// 获取用户信息
+
+
+// 提交修改
 const submitForm = async () => {
   // 二次校验
   await formRef.value.validate()
   // 提交修改
   // await userEditInfoService(userInfo.value)
   // 通知user模块更新用户信息
-  getUser()
+  getUserInfo()
   ElMessage.success('修改成功')
 }
 
@@ -51,18 +56,19 @@ const submitForm = async () => {
       <el-row>
         <el-col :span="12">
           <el-form
+            :model="user"
             :rules="rules"
             ref="formRef"
             label-width="100px"
             size="large">
-            <el-form-item label="登录名称">
-              <el-input v-model="userInfo.username" disabled></el-input>
+            <el-form-item label="登录账号">
+              <el-input v-model="user.username" disabled></el-input>
             </el-form-item>
             <el-form-item label="用户昵称" prop="nickname">
-              <el-input v-model="userInfo.nickname"></el-input>
+              <el-input v-model="user.nickname"></el-input>
             </el-form-item>
             <el-form-item label="用户邮箱" prop="email">
-              <el-input v-model="userInfo.email"></el-input>
+              <el-input v-model="user.email"></el-input>
             </el-form-item>
             <el-form-item>
               <el-button @click="submitForm" type="primary">提交修改</el-button>

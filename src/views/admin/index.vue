@@ -2,6 +2,8 @@
 import Avatar from '@/assets/images/tb.jpg'
 import { useRouter } from 'vue-router'
 const router = useRouter()
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
 import {
   HomeFilled,
   Collection,
@@ -23,8 +25,10 @@ const handleCommand = async (key) => {
     })
 
     // 清除本地信息 (token + user信息)
-
+    userStore.logout()
+    // 跳转到登录页
     router.push('/home')
+
   } else {
     // 跳转操作
     router.push(`/admin/${key}`)

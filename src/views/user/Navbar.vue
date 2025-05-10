@@ -17,12 +17,12 @@ const handleNavClick = (item) => {
   normalNavItems.forEach((navItem) => {
     // 移除所有导航项的 active 类
     navItem.active = false
-    console.log(navItem) // 调试信息，打印每个导航项的 active 状态到控制台
+    // console.log(navItem) // 调试信息，打印每个导航项的 active 状态到控制台
     // 找到当前点击的导航项，并设置其 active 为 true
     if (navItem.text === item.text) {
       navItem.active = true
     }
-    console.log(navItem) // 调试信息，打印每个导航项的 active 状态到控制台
+    // console.log(navItem) // 调试信息，打印每个导航项的 active 状态到控制台
   })
 }
 </script>

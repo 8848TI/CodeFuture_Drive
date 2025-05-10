@@ -1,5 +1,6 @@
 // 引入axios
 import axios from 'axios'
+import { useUserStore } from '@/stores'
 
 const request = axios.create({
   timeout: 5000,
@@ -11,6 +12,11 @@ const request = axios.create({
 // 添加请求拦截器
 request.interceptors.request.use(function (config) {
   // 在发送请求之前做些什么
+  const userStore = useUserStore()
+  // 携带token
+  if (userStore.token) {
+    config.headers.Authorization = userStore.token
+  }
   return config
 }, function (error) {
   // 对请求错误做些什么
