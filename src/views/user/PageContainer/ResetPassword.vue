@@ -1,5 +1,13 @@
 <script setup>
 import { ref } from 'vue'
+import { userUpdatePwd } from '@/api/userService'
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
+import { useRouter } from 'vue-router'
+const router = useRouter()
+
+// 提取正则表达式为常量
+const PASSWORD_REGEX = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d\W]{6,12}$/
 
 const pwdForm = ref({
   old_pwd: '',
@@ -22,13 +30,14 @@ const checkNewSame = (rule, value, cb) => {
     cb()
   }
 }
+
 const rules = {
   // 原密码
   old_pwd: [
     { required: true, message: '请输入密码', trigger: 'blur' },
     {
-      pattern: /^\S{6,15}$/,
-      message: '密码长度必须是6-15位的非空字符串',
+      pattern: PASSWORD_REGEX,
+      message: '密码长度必须是 6-12 位，且必须包含字母和数字',
       trigger: 'blur'
     }
   ],
@@ -36,8 +45,8 @@ const rules = {
   new_pwd: [
     { required: true, message: '请输入新密码', trigger: 'blur' },
     {
-      pattern: /^\S{6,15}$/,
-      message: '密码长度必须是6-15位的非空字符串',
+      pattern: PASSWORD_REGEX,
+      message: '密码长度必须是 6-12 位，且必须包含字母和数字',
       trigger: 'blur'
     },
     { validator: checkOldSame, trigger: 'blur' }
@@ -46,22 +55,26 @@ const rules = {
   re_pwd: [
     { required: true, message: '请再次确认新密码', trigger: 'blur' },
     {
-      pattern: /^\S{6,15}$/,
-      message: '密码长度必须是6-15位的非空字符串',
+      pattern: PASSWORD_REGEX,
+      message: '密码长度必须是 6-12 位，且必须包含字母和数字',
       trigger: 'blur'
     },
     { validator: checkNewSame, trigger: 'blur' }
   ]
 }
+
 const formRef = ref()
 
 const onSubmit = async () => {
-  const valid = await formRef.value.validate()
-  if (valid) {
-    // 移除 API 调用和状态管理操作
-    alert('表单验证通过，模拟修改密码成功')
-  }
+  const res = await userUpdatePwd({ oldPwd: pwdForm.value.old_pwd, newPwd: pwdForm.value.new_pwd })
+  if (res.data.status === 0) 
+    ElMessage.success({ type: 'success', message: res.data.msg })
+  else
+    return ElMessage.error({ type:'error', message: res.data.msg })
+  userStore.logout()
+  router.push('/login')
 }
+
 const onReset = () => {
   formRef.value.resetFields()
 }

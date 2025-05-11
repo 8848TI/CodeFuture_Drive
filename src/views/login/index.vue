@@ -31,15 +31,20 @@ const loginBtn = ref(null)
 onMounted(() => {
   registerBtn.value.addEventListener('click', () => {
     container.value.classList.add('active')
+    registerUsername.value = ''
+    registerPassword.value = ''
+    registerConfirmPassword.value = ''
   })
 
   loginBtn.value.addEventListener('click', () => {
     container.value.classList.remove('active')
+    loginUsername.value = ''
+    loginPassword.value = ''
   })
 })
 
 // 登录表单提交
-const loginUsername = ref('hngy01')
+const loginUsername = ref('hngy02')
 const loginPassword = ref('rjxh2025')
 
 const submitLoginForm = async (event) => {
@@ -72,10 +77,22 @@ const registerUsername = ref(null)
 const registerPassword = ref(null)
 const registerConfirmPassword = ref(null)
 
-const submitRegisterForm = () => {
+const submitRegisterForm = async (event) => {
   // 阻止表单默认提交行为
   event.preventDefault()
-  console.log('注册表单提交')
+  // 注册逻辑
+  const res = await userRegister({ username: registerUsername.value, password: registerPassword.value })
+  if (res.data.status === 0) {
+    alert(res.data.msg || '注册成功')
+    // 清除表单
+    registerUsername.value = ''
+    registerPassword.value = ''
+    registerConfirmPassword.value = ''
+    // 点击登录按钮，切换到登录界面
+    loginBtn.value.click()
+  } else {
+    alert(res.data.msg || '注册失败，请稍后重试')
+  }
 }
 
 // github登录
@@ -132,15 +149,15 @@ const btnGithubLogin = () => {
         <form action="">
           <h1>注册</h1>
           <div class="input-box">
-            <input type="text" placeholder="账号" required autocomplete="username">
+            <input v-model="registerUsername" type="text" placeholder="账号" required autocomplete="username">
             <i class="bi bi-person"></i>
           </div>
           <div class="input-box">
-            <input type="password" placeholder="密码" required autocomplete="new-password">
+            <input v-model="registerPassword" type="password" placeholder="密码" required autocomplete="new-password">
             <i class="bi bi-lock"></i>
           </div>
           <div class="input-box">
-            <input type="password" placeholder="密码" required autocomplete="new-password">
+            <input v-model="registerConfirmPassword" type="password" placeholder="密码" required autocomplete="new-password">
             <i class="bi bi-lock"></i>
           </div>
           <button @click="submitRegisterForm" type="submit" class="btn">注册</button>

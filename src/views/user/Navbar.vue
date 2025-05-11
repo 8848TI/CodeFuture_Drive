@@ -1,5 +1,10 @@
 <script setup>
-import { ref } from 'vue';
+import { ref } from 'vue'
+import { useRoute } from 'vue-router'
+const route = useRoute()
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
+
 // 普通导航项
 const normalNavItems = [
   { text: '博客文章', to: '/user', active: true },
@@ -17,13 +22,14 @@ const handleNavClick = (item) => {
   normalNavItems.forEach((navItem) => {
     // 移除所有导航项的 active 类
     navItem.active = false
-    // console.log(navItem) // 调试信息，打印每个导航项的 active 状态到控制台
     // 找到当前点击的导航项，并设置其 active 为 true
     if (navItem.text === item.text) {
       navItem.active = true
     }
-    // console.log(navItem) // 调试信息，打印每个导航项的 active 状态到控制台
   })
+  if (item.text === '退出登录') {
+    userStore.logout()
+  }
 }
 </script>
 

@@ -3,8 +3,10 @@ import { shallowRef, onMounted, ref } from 'vue'
 import { useThemeStore } from '@/stores'
 import { Sunny, Moon } from '@element-plus/icons-vue'
 import { Top } from '@element-plus/icons-vue'
-import { useRoute } from 'vue-router'
-const route = useRoute()
+import { useRouter } from 'vue-router'
+const router = useRouter()
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
 
 const size = shallowRef(25)
 const themeIcon = shallowRef(Sunny)
@@ -43,19 +45,18 @@ const goToTop = () => {
 
 // 添加文章
 const addArticle = () => {
-  // route.push('/addarticle')
-  window.location.href = '/addarticle'
+  router.push('/addarticle')
 }
 
 // 回到首页
 const goHome = () => {
-  window.location.href = '/home'
+  router.push('/home')
 }
 
 // 退出登录
 const leave = () => {
-  // localStorage.removeItem('token')
-  route.push('/login')
+  userStore.logout()
+  router.push('/login')
 }
 </script>
 

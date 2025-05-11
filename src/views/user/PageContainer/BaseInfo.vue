@@ -1,5 +1,5 @@
 <script setup>
-// import { userEditInfoService } from '@/api/user'
+import { userUpdateUserInfo } from '@/api/userService'
 import { useUserStore } from '@/stores'
 import { ref } from 'vue'
 import PageContainer from '@/components/PageContainer.vue'
@@ -14,7 +14,6 @@ const user = ref({
   email,
   id
 })
-console.log(useUserStore().userInfo)
 
 const rules = {
   nickname: [
@@ -41,7 +40,7 @@ const submitForm = async () => {
   // 二次校验
   await formRef.value.validate()
   // 提交修改
-  // await userEditInfoService(userInfo.value)
+  await userUpdateUserInfo(user.value)
   // 通知user模块更新用户信息
   getUserInfo()
   ElMessage.success('修改成功')
