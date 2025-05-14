@@ -2,10 +2,11 @@
 import { ref, onMounted, watch } from 'vue'
 import { RouterView, useRoute } from 'vue-router'
 const route = useRoute()
+import { useUserStore } from '@/stores'
+const userStore = useUserStore()
 
 import BlogEntryPreview from '@/components/BlogEntryPreview.vue'
 import BlogPagination from '@/components/BlogPagination.vue'
-import UserInfoLogo from '@/components/UserInfoLogo.vue'
 import Navbar from './Navbar.vue'
 import SliderNavbar from './SliderNavbar.vue'
 
@@ -32,6 +33,12 @@ onMounted(() => {
 watch(() => route.fullPath, (newPath) => {
   newPath === '/user' ? blogRoute.setFlag(false) : blogRoute.setFlag(true)
 })
+function setFlag(it) {
+  it === '/user' ? blogRoute.setFlag(false) : blogRoute.setFlag(true)
+}
+
+setFlag(route.fullPath)
+
 
 
 </script>
@@ -40,10 +47,9 @@ watch(() => route.fullPath, (newPath) => {
   <div id="user">
     <!-- 顶部开始 -->
     <div class="top">
-      <!-- <div class="top-navbar">
-        <UserInfoLogo class="user-info" item="回到首页" address="/home"/>
-      </div> -->
-      <div ref="TopBg" class="top-bg main"></div>
+      <div ref="TopBg" class="top-bg main">
+        <div class="username">{{ userStore.userInfo.username }} 的空间</div>
+      </div>
     </div>
     <!-- 顶部结束 -->
     <!-- 中间导航栏开始 -->
@@ -86,20 +92,6 @@ watch(() => route.fullPath, (newPath) => {
   }
 
   .top {
-    .top-navbar {
-      position: relative;
-      width: 100%;
-      height: 50px;
-      background-color: var(--theme-second-bg);
-
-      .user-info {
-        position: absolute;
-        bottom: 5%;
-        right: 5%;
-        z-index: 1;
-      }
-    }
-
     .top-bg {
       background: url('../../assets/images/b1.jpeg') center no-repeat;
       width: 100%;
@@ -107,6 +99,15 @@ watch(() => route.fullPath, (newPath) => {
       background-size: cover;
       z-index: 0;
       position: relative;
+
+      .username {
+        position: absolute;
+        left: 22%;
+        top: 10%;
+        font-size: 35px;
+        color: #fff;
+        font-weight: 900;
+      }
     }
   }
 
@@ -127,7 +128,7 @@ watch(() => route.fullPath, (newPath) => {
 @media screen and (max-width: 1000px) {
   #user {
     .main {
-      width: 700px; 
+      width: 700px;
     }
   }
 }

@@ -1,6 +1,6 @@
 <script setup>
 import { RouterView,useRoute } from 'vue-router'
-import { watch } from 'vue'
+import { watch, ref } from 'vue'
 
 import BlogEntryPreview from '@/components/BlogEntryPreview.vue'
 import BlogPagination from '@/components/BlogPagination.vue'
@@ -8,6 +8,17 @@ import GoTop from '@/components/GoTop.vue'
 import FooterInfo from '../../components/FooterInfo.vue'
 
 import { useBlogRoute } from '@/stores/index'
+
+import { articleGetAllArticle } from '@/api/articleService'
+
+const articles = ref([])
+
+const getArticles = async () => {
+  const { data } = await articleGetAllArticle()
+  if (data.status === 0) articles.value = data.data
+}
+
+getArticles()
 
 // 同过监听导航来控制是否显示三级路由
 const blogRoute = useBlogRoute()
@@ -17,6 +28,13 @@ const route = useRoute()
 watch(() => route.fullPath, (newPath) => {
   newPath === '/blog' ? blogRoute.setFlag(false) : blogRoute.setFlag(true)
 })
+function setFlag(it) {
+  it === '/blog' ? blogRoute.setFlag(false) : blogRoute.setFlag(true)
+}
+
+setFlag(route.fullPath)
+
+
 </script>
 
 <template>
@@ -27,12 +45,12 @@ watch(() => route.fullPath, (newPath) => {
         <RouterView class="col-lg-9" v-if="blogRoute.flag"/>
         <!-- 瀑布流布局 -->
         <div class="col-lg-9 masonry-layout" v-else>
-          <BlogEntryPreview v-for="i in 10" :key="i"
-            title="Vue 3 入门指南"
+          <BlogEntryPreview v-for="item in articles" :key="item.id"
+            :title="item.title"
             author="张三"
-            date="2025-04-14"
+            :date="item.created_at"
             excerpt="本指南将带你快速了解 Vue 3 的新特性和基本用法。"
-            imageUrl="../../assets/images/07.jpg"
+            :imageUrl="item.cover_image"
           />
           <!-- 分页功能开始 -->
           <BlogPagination class="col-lg-9"/>

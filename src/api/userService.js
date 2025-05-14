@@ -22,7 +22,7 @@ export const userUpdateUserInfo = (data) => {
 
 // 更新用户头像
 export const userUpdateAvatar = (avatar) => {
-  return request.post('/my/update/avatar', avatar)
+  return request.post('/my/update/avatar', { avatar })
 }
 
 // 更新用户密码

@@ -9,6 +9,9 @@ const router = useRouter()
 const userStore = useUserStore()
 const theme = useThemeStore()
 
+const avatar = userStore.userInfo.user_pic
+console.log(avatar)
+
 // 按钮状态
 const isDarkTheme = ref(theme.theme === 'light')
 // 切换主题的函数
@@ -20,8 +23,6 @@ const themeSwitch = () => {
 const login = () => {
   // 前往登录界面
   router.push({ path: '/login' })
-
-  // userStore.login({ avatar: avatarImg })
 }
 
 const logout = () => {
@@ -51,8 +52,8 @@ const props = defineProps({
     >
       <div class="user-avatar">
         <img
-          v-if="userStore.isLoggedIn"
-          :src="userStore.userInfo.avatar"
+          v-if="avatar || userStore.isLoggedIn"
+          :src="avatarImg"
           alt="用户头像"
           class="rounded-circle"
         />
@@ -115,6 +116,7 @@ const props = defineProps({
           width: 100%;
           height: 100%;
           object-fit: cover;
+          font-size: 12px;
         }
 
         i {

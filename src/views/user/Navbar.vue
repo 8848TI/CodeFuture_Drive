@@ -1,7 +1,5 @@
 <script setup>
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
-const route = useRoute()
 import { useUserStore } from '@/stores'
 const userStore = useUserStore()
 
@@ -47,6 +45,7 @@ const handleNavClick = (item) => {
     </button>
     <ul :class="{ 'collapsed': isNavCollapsed }">
       <li>
+        <div class="nickname">{{ userStore.userInfo.nickname }}</div>
         <div class="avatar">
           <img src="../../assets/images/tb.jpg" alt="">
         </div>
@@ -99,6 +98,14 @@ const handleNavClick = (item) => {
       width: 200px;
       height: 100%;
 
+      .nickname {
+        position: absolute;
+        top: -150%;
+        left: 20%;
+        color: #fff;
+        font-size: 20px;
+      }
+
       .avatar {
         position: absolute;
         bottom: calc(50% - 5px);
@@ -147,6 +154,10 @@ const handleNavClick = (item) => {
 
     li:first-child {
       width: 120px; // 缩小头像所在 li 的宽度
+
+      .nickname {
+        left: 30% !important;
+      }
     }
 
     li:first-child .avatar {

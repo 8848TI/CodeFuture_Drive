@@ -4,34 +4,45 @@ import { Plus, Upload } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores'
 const userStore = useUserStore()
 import { userUpdateAvatar } from '@/api/userService'
+import Cropper from "vue3-cropper"
+import 'vue3-cropper/lib/vue3-cropper.css'
 
 // 初始化头像图片链接
 const uploadRef = ref(null) // 上传组件实例
-const base64Data = ref(null) // 图片的base64编码
+const cropperRef = ref(null) // 裁剪组件实例
 const imgUrl = ref(userStore.userInfo.user_pic)
+const cropperVisible = ref(false) // 裁剪组件的显示状态
+const previewImage = ref(null) // 裁剪后的图片链接
+
+const onSave = (res) => {
+  previewImage.value = res // 保存裁剪后的图片链接
+  cropperVisible.value = false // 隐藏裁剪组件
+}
+
+const onCancel = () => {
+  cropperVisible.value = false // 隐藏裁剪组件
+}
+
 const onSelectFile = (uploadFile) => {
+  cropperVisible.value = true // 显示裁剪组件
   // 生成临时图片 URL
   imgUrl.value = URL.createObjectURL(uploadFile.raw)
-  const reader = new FileReader() // 创建文件读取器对象
-  reader.readAsDataURL(uploadFile.raw) // 读取文件内容为base64编码
-  reader.onload = (e) => { // 读取完成后执行的回调函数
-    // 将读取到的base64编码赋值给base64Data变量，并截取掉开头的"data:image/png;base64,"部分
-    base64Data.value = e.target.result.split(',')[1]
-  }
-  reader.onerror = () => { // 读取失败后执行的回调函数
-    ElMessage.error('读取文件失败')
-  }  
 }
 
 // 上传头像
 const uploadAvatar = async () => {
-  console.log(base64Data.value) // 打印base64编码，用于调试
+    // 截取图片链接中的 base64 部分
+  // const base64Image = previewImage.value.split(',')[1]
+  console.log(previewImage.value)
 
-  if (!base64Data.value) { // 检查是否有图片数据
-    return ElMessage.error('请选择图片')
-  }
-  const res = await userUpdateAvatar(base64Data.value) // 调用接口上传头像
+  const res = await userUpdateAvatar(previewImage.value)
   console.log(res)
+  if (res.data.status === 0) {
+    ElMessage.success({ type: 'success', message: res.data.msg })
+    await userStore.getUserInfo() // 更新用户信息
+  } else {
+    ElMessage.error({ type:'error', message: res.data.msg })
+  }
 }
 </script>
 <template>
@@ -48,6 +59,16 @@ const uploadAvatar = async () => {
       <!-- 若无图片链接则显示添加图标 -->
       <el-icon v-else class="avatar-uploader-icon"><Plus /></el-icon> 
     </el-upload>
+    <Cropper
+      v-if="cropperVisible"
+      ref="cropperRef"
+      :src="imgUrl"
+      :imagePath="imgUrl"
+      :fixedBox="true"
+      @save="onSave"
+      @cancel="onCancel"
+    />
+    <img v-if="previewImage" :src="previewImage" alt="预览图" style="max-width: 100%; max-height: 100%;">
     <div class="button">
       <el-button
         @click="$refs.uploadRef.$el.querySelector('input').click()"

@@ -24,7 +24,7 @@ const router = createRouter({
               meta: { roles: ['user', 'admin'] } 
             },
             { 
-              path: 'archives', 
+              path: 'archives',
               component: () => import('@/views/blog/Archives.vue'),
               meta: { roles: ['user', 'admin'] } 
             },
