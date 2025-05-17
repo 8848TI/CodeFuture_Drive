@@ -2,6 +2,7 @@
 import Vditor from 'vditor'
 import 'vditor/dist/index.css'
 import { ref, onMounted } from 'vue'
+import { articleAddArticle } from '@/api/articleService'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus' // 引入 Element Plus 消息提示
 import DOMpurify from 'dompurify'
@@ -24,19 +25,24 @@ const tags = ['HTML', 'CSS', 'Javascript', 'Canvas', 'Vue', 'Rect', 'Web',
               '其它']
 const categories = ['前端开发', '后端开发', '移动端开发', '开发工具', '数据结构与算法', '其它']
 
+const formRef = ref(null) // 用于获取表单实例的引用
+
 // 表单数据
 const form = ref({
-  tags: [],
-  cover: null,
-  summary: '',
-  category: ''
+  title: '', // 文章标题
+  description: '', // 文章摘要
+  content: '', // 文章内容
+  cover_url: '', // 封面
+  categories_name: '', // 分类
+  types_name: '' // 标签
 })
 
 // 表单验证规则
 const rules = {
-  tags: [{ type: 'array', required: true, message: '请选择文章标签', trigger: 'change' }],
-  summary: [{ required: true, message: '请输入文章摘要', trigger: 'blur' }],
-  category: [{ required: true, message: '请选择文章专栏', trigger: 'change' }]
+  title: [{ required: true, message: '请输入文章标题', trigger: 'blur' }],
+  types_name: [{ required: true, message: '请选择文章标签', trigger: 'change' }],
+  description: [{ required: true, message: '请输入文章摘要', trigger: 'blur' }],
+  categories_name: [{ required: true, message: '请选择文章专栏', trigger: 'change' }]
 }
 
 // 在组件挂载后初始化编辑器
@@ -64,6 +70,8 @@ const goBack = () => {
 const confirmLeave = () => {
   router.push('/user')
   showDialog.value = false
+  // 清除markdown格式的内容
+  vditor.value.setValue('') // 清空编辑器中的内容
 }
 
 // 取消离开
@@ -82,21 +90,52 @@ const publishBlog = () => {
 }
 
 // 实际发布博客的函数
-const submitPublishForm = () => {
-  // 拿到markkdown格式的内容
-  const markdownContent = vditor.value.getValue()
-  // 过滤用户输入的 HTML
-  // const cleanHTML = DOMPurify.sanitize(markdownContent)
-  console.log('cleanHTML', markdownContent)
-  // console.log('markdownContent', markdownContent)
-  console.log('实际发布博客操作', form.value)
-  alert('实际发布博客操作')
-  showPublishForm.value = false
+const submitPublishForm = async (formRef) => {
+  // 验证form表单
+  formRef.validate(async (valid) => {
+    if (valid) {
+      // 拿到markkdown格式的内容
+      const markdownContent = vditor.value.getValue()
+      // 如果内容为空，提示用户
+      if (!markdownContent.trim()) {
+        ElMessage.error('请输入文章内容')
+        return false
+      }
+      form.value.content = markdownContent
+      // 将types_name数组转换为字符串
+      if (Array.isArray(form.value.types_name)) {
+        form.value.types_name = form.value.types_name.join(',')
+      }
+
+      // 使用 FormData 封装数据
+      const formData = new FormData()
+      for (const key in form.value) {
+        formData.append(key, form.value[key])
+      }
+      const res = await articleAddArticle(formData)
+      if (res.data.status === 0) {
+        ElMessage.success('发布成功')
+        // 清空markdown格式的内容
+        vditor.value.setValue('') // 清空编辑器中的内容
+        // 关闭发布表单
+        showPublishForm.value = false
+        // 清空表单数据
+        form.value = {}
+      } else {
+        ElMessage.error('发布失败')
+      }
+    } else {
+      return false
+    }
+  })  
 }
 
 // 取消发布
 const cancelPublish = () => {
   showPublishForm.value = false
+  // 清空表单数据
+  form.value = {
+  }
 }
 
 // 新增封面预览地址
@@ -106,7 +145,7 @@ const coverUrl = ref('')
 const handleCoverUpload = (event) => {
   const file = event.target.files[0]
   if (file) {
-    form.value.cover = file
+    form.value.cover_url = file
     coverUrl.value = URL.createObjectURL(file)
   }
 }
@@ -162,9 +201,12 @@ const handleCoverUpload = (event) => {
     <transition name="dialog">
       <div v-if="showPublishForm" class="dialog publish-form">
         <el-form :model="form" :rules="rules" ref="formRef" label-width="120px" class="responsive-form">
+          <el-form-item label="添加标题" prop="title">
+            <el-input v-model="form.title" placeholder="请输入文章标题"></el-input>
+          </el-form-item>
           <!-- 文章标签 -->
-          <el-form-item label="文章标签" prop="tags">
-            <el-select v-model="form.tags" multiple placeholder="请选择文章标签">
+          <el-form-item label="文章标签" prop="types_name">
+            <el-select v-model="form.types_name" multiple placeholder="请选择文章标签">
               <el-option
                 v-for="tag in tags"
                 :key="tag"
@@ -186,17 +228,17 @@ const handleCoverUpload = (event) => {
             </div>
           </el-form-item>
           <!-- 文章摘要 -->
-          <el-form-item label="文章摘要" prop="summary">
+          <el-form-item label="文章摘要" prop="description">
             <el-input
               type="textarea"
-              v-model="form.summary"
+              v-model="form.description"
               :rows="3"
               placeholder="请输入文章摘要">
             </el-input>
           </el-form-item>
           <!-- 文章专栏 -->
-          <el-form-item label="文章专栏" prop="category">
-            <el-select v-model="form.category" placeholder="请选择文章专栏">
+          <el-form-item label="文章专栏" prop="categories_name">
+            <el-select v-model="form.categories_name" placeholder="请选择文章专栏">
               <el-option
                 v-for="cat in categories"
                 :key="cat"
@@ -207,7 +249,7 @@ const handleCoverUpload = (event) => {
           </el-form-item>
           <!-- 操作按钮 -->
           <el-form-item>
-            <el-button type="primary" @click="submitPublishForm">确认发布</el-button>
+            <el-button type="primary" @click="submitPublishForm(formRef)">确认发布</el-button>
             <el-button @click="cancelPublish">取消</el-button>
           </el-form-item>
         </el-form>

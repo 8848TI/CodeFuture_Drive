@@ -69,27 +69,34 @@ const props = defineProps({
   }
 
   .col-md-8 {
-    .card-title {
-      color: var(--color-heading);
-    }
+    .card-body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      height: 100%;
+      
+      .card-title {
+        color: var(--color-heading);
+      }
 
-    .text-truncate {
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+      .text-truncate {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
 
-    .excerpt-text{
-      display: -webkit-box;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 4; /* 控制显示的行数 */
-      overflow: hidden;
-      color: var(--color-text);
-    }
+      .excerpt-text{
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 3; /* 控制显示的行数 */
+        overflow: hidden;
+        color: var(--color-text);
+      }
 
-    .card-text  {
-      small {
-        color: var(--color-text) !important;
+      .card-text  {
+        small {
+          color: var(--color-text) !important;
+        }
       }
     }
   }

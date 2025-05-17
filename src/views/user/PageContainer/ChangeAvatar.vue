@@ -31,10 +31,6 @@ const onSelectFile = (uploadFile) => {
 
 // 上传头像
 const uploadAvatar = async () => {
-    // 截取图片链接中的 base64 部分
-  // const base64Image = previewImage.value.split(',')[1]
-  console.log(previewImage.value)
-
   const res = await userUpdateAvatar(previewImage.value)
   console.log(res)
   if (res.data.status === 0) {

@@ -3,14 +3,13 @@ import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/index'
 import { ref, defineProps } from 'vue'
 import { useThemeStore } from '@/stores/index'
-import avatarImg from '@/assets/images/avatar.png'
 
 const router = useRouter()
 const userStore = useUserStore()
 const theme = useThemeStore()
 
-const avatar = userStore.userInfo.user_pic
-console.log(avatar)
+import avatarImg from '@/assets/images/avatar.png'
+const avatar = userStore.userInfo.avatar_path
 
 // 按钮状态
 const isDarkTheme = ref(theme.theme === 'light')
@@ -53,7 +52,7 @@ const props = defineProps({
       <div class="user-avatar">
         <img
           v-if="avatar || userStore.isLoggedIn"
-          :src="avatarImg"
+          :src="avatar || avatarImg"
           alt="用户头像"
           class="rounded-circle"
         />
@@ -68,6 +67,10 @@ const props = defineProps({
         </router-link>
         <router-link v-else class="dropdown-item user-dropdown-item" :to="arr[0].to">
           <i class="bi bi-person-lines-fill me-2"></i>{{ arr[0].text }}
+        </router-link>
+        <!-- 添加新条目 -->
+        <router-link v-if="userStore.role === 'admin'" class="dropdown-item user-dropdown-item" :to="arr[2].to">
+          <i class="bi bi-file-earmark-word me-2"></i>{{ arr[2].text  }}
         </router-link>
       </li>
       <li v-if="userStore.token">

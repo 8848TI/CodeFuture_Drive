@@ -16,6 +16,9 @@ const articles = ref([])
 const getArticles = async () => {
   const { data } = await articleGetAllArticle()
   if (data.status === 0) articles.value = data.data
+  for (let i = 0; i < articles.value.length; i++) {
+    articles.value[i].created_at = articles.value[i].created_at.split('T')[0]
+  }
 }
 
 getArticles()
@@ -49,7 +52,7 @@ setFlag(route.fullPath)
             :title="item.title"
             author="张三"
             :date="item.created_at"
-            excerpt="本指南将带你快速了解 Vue 3 的新特性和基本用法。"
+            :excerpt="item.description"
             :imageUrl="item.cover_image"
           />
           <!-- 分页功能开始 -->

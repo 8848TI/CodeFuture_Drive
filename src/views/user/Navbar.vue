@@ -3,6 +3,11 @@ import { ref } from 'vue'
 import { useUserStore } from '@/stores'
 const userStore = useUserStore()
 
+// 空图片
+import Avatar from '@/assets/images/avatar.png'
+const avatar = userStore.userInfo.avatar_path || Avatar
+
+
 // 普通导航项
 const normalNavItems = [
   { text: '博客文章', to: '/user', active: true },
@@ -47,7 +52,7 @@ const handleNavClick = (item) => {
       <li>
         <div class="nickname">{{ userStore.userInfo.nickname }}</div>
         <div class="avatar">
-          <img src="../../assets/images/tb.jpg" alt="">
+          <img :src="avatar" alt="">
         </div>
       </li>
       <li v-for="item in normalNavItems" :key="item.text">

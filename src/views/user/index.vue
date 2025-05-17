@@ -4,6 +4,7 @@ import { RouterView, useRoute } from 'vue-router'
 const route = useRoute()
 import { useUserStore } from '@/stores'
 const userStore = useUserStore()
+import { articleGetUserArticle } from '@/api/articleService'
 
 import BlogEntryPreview from '@/components/BlogEntryPreview.vue'
 import BlogPagination from '@/components/BlogPagination.vue'
@@ -39,7 +40,19 @@ function setFlag(it) {
 
 setFlag(route.fullPath)
 
-
+// 获取用户的文章
+const userArticles = ref([])
+const getUserArticles = async () => {
+  const res = await articleGetUserArticle()
+  if (res.data.status === 0) {
+    userArticles.value = res.data.data
+    // 将时间戳转换为日期格式 2025-01-01
+    for (let i = 0; i < userArticles.value.length; i++) {
+      userArticles.value[i].created_at = userArticles.value[i].created_at.split('T')[0]
+    }
+  }
+}
+getUserArticles()
 
 </script>
 
@@ -60,11 +73,11 @@ setFlag(route.fullPath)
     <!-- 博客列表开始 -->
     <div class="container" v-else>
       <div class="col-lg-9 main masonry-layout">
-        <BlogEntryPreview v-for="i in 10" :key="i"
-          title="Vue 3 入门指南"
+        <BlogEntryPreview v-for="item in userArticles" :key="item.id"
+          :title="item.title"
           author="张三"
-          date="2025-04-14"
-          excerpt="本指南将带你快速了解 Vue 3 的新特性和基本用法。"
+          :date="item.created_at"
+          :excerpt="item.description"
           imageUrl="../../assets/images/07.jpg"
         />
         <!-- 分页功能开始 -->

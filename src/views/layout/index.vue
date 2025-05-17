@@ -18,6 +18,6 @@ import Navbar from './Navbar.vue'
 #layout {
   /* 确保布局不会有额外的滚动条 */
   overflow: hidden;
-  background-color: var(--theme-main-bg);
+  background: var(--theme-gradient);
 }
 </style>

@@ -80,7 +80,8 @@ const themeSwitch = () => {
 
 const userInfoLogo = [
   { text: '个人空间', to: '/user' },
-  { text: '管理博客', to: '/admin' }
+  { text: '管理博客', to: '/admin' },
+  { text: '我的文章', to: '/user' }
 ]
 
 

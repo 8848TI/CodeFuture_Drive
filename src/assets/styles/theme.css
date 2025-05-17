@@ -1,5 +1,7 @@
 /* 默认主题亮色 */
 :root {
+  --theme-gradient: linear-gradient(to top, white 0%, #dfe9f3 50%, white 100%); /* 渐变背景 */
+
   --theme-main-bg: #f6f6f7;        /* 主要背景色 */
   --theme-second-bg: #fff;         /* 次要背景色 */
   --theme-accent-color: #8cccd5;   /* 点缀色 */
@@ -33,6 +35,8 @@
 
 /* 深色主题 */
 html[data-theme="dark"] {
+  --theme-gradient: var(--theme-main-bg); /* 渐变背景 */
+
   --theme-main-bg: #161618;        /* 主要背景色 */
   --theme-second-bg: #1b1b1f;         /* 次要背景色 */
   --theme-accent-color: #8cccd5;   /* 点缀色 */
