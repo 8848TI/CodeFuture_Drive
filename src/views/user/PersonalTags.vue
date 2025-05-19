@@ -1,6 +1,7 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue'
 import { articleGetPublicAllArticleTags } from '@/api/articlePublicService'
+import SliderNavbar from './SliderNavbar.vue'
 
 // 模拟标签数据，实际开发中可从后端获取
 const tags = ref([])
@@ -12,6 +13,12 @@ const typeColors = [
   { backgroundColor: `var(--tag-color-4-bg)`, color: `var(--tag-color-4-text)`, border: `1px solid var(--tag-color-4-border)` }
 ] 
 
+onMounted(async () => {
+  // 从后端获取标签数据
+  const res = await articleGetPublicAllArticleTags()
+  tags.value = res.data.data
+})
+
 const getRandomColor = () => {
   const randomIndex = Math.floor(Math.random() * typeColors.length)
   return typeColors[randomIndex]
@@ -22,17 +29,11 @@ const tagStyles = computed(() => {
   return tags.value.map(() => getRandomColor())
 })
 
-onMounted(async () => {
-  // 从后端获取标签数据
-  const res = await articleGetPublicAllArticleTags()
-  tags.value = res.data.data
-})
-
-
 </script>
 
 <template>
-  <div class="tags-container">
+  <div id="person-tags">
+    <div class="tags-container">
       <div class="title">
         <i class="bi bi-tag-fill"></i>
         <h1 class="tags-title">标签</h1>
@@ -54,76 +55,77 @@ onMounted(async () => {
         </div>
       </div>
     </div>
+    <SliderNavbar/>
+  </div>
 </template>
 
 <style scoped lang="scss">
-.tags-container {
-  padding: 20px;
-  background-color: var(--theme-second-bg);
-  border-radius: 14px;
-  height: 70vh;
+#person-tags {
+  .tags-container {
+    padding: 20px;
+    background-color: var(--theme-second-bg);
+    border-radius: 14px;
+    min-height: 300px;
+    height: 45vh;
 
-  // 标题样式开始
-  .title {  
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-    color: var(--color-heading);
-
-    i {
-      font-size: 24px;
-      margin-right: 10px;
-    }
-
-    .tags-title {
-      font-size: 24px;
-      font-weight: bold;
-      line-height: 24px;
-    }
-  }
-  // 标题样式结束
-  // 标签列表样式开始
-  .tags-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-
-    .tag-item {
+    // 标题样式开始
+    .title {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      padding: 6px 14px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      min-width: 80px;
-      transition: background-color 0.3s ease;
+      margin-bottom: 20px;
+      color: var(--color-heading);
 
-      .tag-name {
-        font-size: 12px;
+      i {
+        font-size: 24px;
+        margin-right: 10px;
       }
 
-      .tag-vertical {
-        width: 1px;
-        height: 20px;
-        background-color: #ddd;
-        margin: 0 10px;
-      }
-
-      .tag-count {
-        font-size: 14px;
-        color: #666;
-      }
-
-      &:hover {
-        background-color: #f5f5f5;
+      .tags-title {
+        font-size: 24px;
+        font-weight: bold;
+        line-height: 24px;
       }
     }
+    // 标题样式结束
+    // 标签列表样式开始
+    .tags-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+
+      .tag-item {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 14px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        min-width: 80px;
+        transition: background-color 0.3s ease;
+
+        .tag-name {
+          font-size: 12px;
+        }
+
+        .tag-vertical {
+          width: 1px;
+          height: 20px;
+          background-color: #ddd;
+          margin: 0 10px;
+        }
+
+        .tag-count {
+          font-size: 14px;
+          color: #666;
+        }
+
+        &:hover {
+          background-color: #f5f5f5;
+        }
+      }
+    }
+    // 标签列表样式结束
+
   }
-  // 标签列表样式结束
-
 }
-
-
-
-
 </style>

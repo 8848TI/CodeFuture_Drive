@@ -32,12 +32,18 @@ const router = createRouter({
               path: 'categories', 
               component: () => import('@/views/blog/Categories.vue'),
               meta: { roles: ['user', 'admin'] } 
+            },
+            {
+              path: ':tagName',
+              component: () => import('@/components/CategoriesList.vue'),
+              meta: { roles: ['user', 'admin'] }
             }
           ]
         },
         {
-          path: 'article',
+          path: 'article/:id',
           component: () => import('@/views/article/index.vue'),
+          name: 'ArticleDetail',
           meta: { roles: ['user', 'admin'] } 
         }
       ]
@@ -48,7 +54,7 @@ const router = createRouter({
       children: [
         { 
           path: 'personalarticel', 
-          component: () => import('@/views/user/PersonalArticle.vue'),
+          component: () => import('@/views/user/PersonalTags.vue'),
           meta: { roles: ['user'] } // 仅允许用户访问
         },
         { 

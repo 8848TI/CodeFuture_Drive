@@ -1,5 +1,5 @@
 <script setup>
-import { RouterView,useRoute } from 'vue-router'
+import { RouterView,useRoute, useRouter } from 'vue-router'
 import { watch, ref } from 'vue'
 
 import BlogEntryPreview from '@/components/BlogEntryPreview.vue'
@@ -9,23 +9,34 @@ import FooterInfo from '../../components/FooterInfo.vue'
 
 import { useBlogRoute } from '@/stores/index'
 
-import { articleGetAllArticle } from '@/api/articleService'
+import { articleGetPublicAllArticle, articleGetPublicAllArticleTags } from '@/api/articlePublicService'
+import Categories from './Categories.vue'
 
+// 获取所有文章
 const articles = ref([])
-
 const getArticles = async () => {
-  const { data } = await articleGetAllArticle()
+  const { data } = await articleGetPublicAllArticle()
   if (data.status === 0) articles.value = data.data
   for (let i = 0; i < articles.value.length; i++) {
     articles.value[i].created_at = articles.value[i].created_at.split('T')[0]
   }
 }
-
 getArticles()
+
+// 获取所有文章标签
+const typesCount = ref(0)
+const categoriesCount = ref(0)
+const archivesCount = ref(0)
+const getTypes = async () => {
+  const { data } = await articleGetPublicAllArticleTags()
+  typesCount.value = data.data.length
+}
+getTypes()
 
 // 同过监听导航来控制是否显示三级路由
 const blogRoute = useBlogRoute()
 const route = useRoute()
+const router = useRouter()
 
 // 监听路由变化
 watch(() => route.fullPath, (newPath) => {
@@ -36,6 +47,12 @@ function setFlag(it) {
 }
 
 setFlag(route.fullPath)
+
+// 跳转到文章详情页
+const goToArticleDetail = (id) => {
+  console.log(id)
+  router.push({ name: 'ArticleDetail', params: { id } })
+}
 
 
 </script>
@@ -54,6 +71,7 @@ setFlag(route.fullPath)
             :date="item.created_at"
             :excerpt="item.description"
             :imageUrl="item.cover_image"
+            @click="goToArticleDetail(item.id)"
           />
           <!-- 分页功能开始 -->
           <BlogPagination class="col-lg-9"/>
@@ -90,7 +108,7 @@ setFlag(route.fullPath)
                       <i class="bi bi-tag-fill"></i>
                     </span>
                     <span class="text">标签</span>
-                    <span class="total">22</span>
+                    <span class="total">{{ typesCount }}</span>
                     <span class="icon">
                       <i class="bi bi-chevron-right"></i>
                     </span>
@@ -102,7 +120,7 @@ setFlag(route.fullPath)
                       <i class="bi bi-box-fill"></i>
                     </span>
                     <span class="text">分类</span>
-                    <span class="total">12</span>
+                    <span class="total">{{ categoriesCount }}</span>
                     <span class="icon">
                       <i class="bi bi-chevron-right"></i>
                     </span>
@@ -114,7 +132,7 @@ setFlag(route.fullPath)
                       <i class="bi bi-folder-fill"></i>
                     </span>
                     <span class="text">归档</span>
-                    <span class="total">25</span>
+                    <span class="total">{{ archivesCount }}</span>
                     <span class="icon">
                       <i class="bi bi-chevron-right"></i>
                     </span>

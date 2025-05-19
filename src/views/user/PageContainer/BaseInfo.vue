@@ -83,9 +83,6 @@ const submitForm = async () => {
 <style lang="scss">
 #user-info {
   .page-container {
-    background: var(--theme-second-bg);
-    border: 1px solid var(--theme-main-bg);
-
     .el-card__header {
       // border: 1px solid var(--theme-main-bg);
     }

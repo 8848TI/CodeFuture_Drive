@@ -23,8 +23,12 @@ defineProps({
 </template>
 <style scoped lang="scss">
 .page-container {
-  min-height: 100%;
   box-sizing: border-box;
+  border-radius: 15px;
+  background: var(--theme-second-bg);
+  border: 1px solid var(--theme-main-bg);
+  color: var(--color-heading);
+
   .header {
     display: flex;
     justify-content: space-between;

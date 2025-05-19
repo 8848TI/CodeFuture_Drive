@@ -7,6 +7,7 @@
   --theme-accent-color: #8cccd5;   /* 点缀色 */
   --theme-shadow-color: #e2e2e3;   /* 阴影色 */
   --color-heading: #3c3c43;        /* 标题文字色 */
+  --color-heading-highlight: #000; /* 标题高亮色 */
   --color-text: #56565b;           /* 正文文字色 */
   --icon-color: #67676c;           /* 图标颜色 */
   --theme-card-highlight: rgba(0, 0, 0, .1); /* 卡片悬停高亮色 */
@@ -31,6 +32,20 @@
   --button-login-bg: #5086a1;    /* 登录按钮背景 */
   --button-login-text: #fff;     /* 登录按钮文字 */
 
+  /* types 标签颜色 */
+  --tag-color-1-bg: #e3f2f2;
+  --tag-color-1-text: #8ed3d1;
+  --tag-color-1-border: #cbe7e7;
+  --tag-color-2-bg: #ddf4f4;
+  --tag-color-2-text: #339999;
+  --tag-color-2-border: #c2ebeb;
+  --tag-color-3-bg: #e9effa;
+  --tag-color-3-text: #338fe1;
+  --tag-color-3-border: #d6e1f6;
+  --tag-color-4-bg: #e0edf8;
+  --tag-color-4-text: #55aaee;
+  --tag-color-4-border: #c6def2;
+
 }
 
 /* 深色主题 */
@@ -42,6 +57,7 @@ html[data-theme="dark"] {
   --theme-accent-color: #8cccd5;   /* 点缀色 */
   --theme-shadow-color: #101012;   /* 阴影色 */
   --color-heading: #bacfcc;        /* 标题文字色 */
+  --color-heading-highlight: #dfdfd6; /* 标题高亮色 */
   --color-text: #98989f;           /* 正文文字色 */
   --icon-color: #98989f;           /* 图标颜色 */
   --theme-card-highlight: #0e0e0f; /* 卡片悬停高亮色 */
@@ -65,5 +81,19 @@ html[data-theme="dark"] {
   /* 登录页码 */
   --button-login-bg: #5086a1;    /* 登录按钮背景 */
   --button-login-text: #000;     /* 登录按钮文字 */
+
+  /* types 标签颜色 */
+  --tag-color-1-bg: #1f2e32;
+  --tag-color-1-text: #66cccc;
+  --tag-color-1-border: #1b1b1f;
+  --tag-color-2-bg: #273e41;
+  --tag-color-2-text: #339999;
+  --tag-color-2-border: #30595c;
+  --tag-color-3-bg: #252b3a;
+  --tag-color-3-text: #3366cc;
+  --tag-color-3-border: #2e3951;
+  --tag-color-4-bg: #1a2736;
+  --tag-color-4-text: #55aaee;
+  --tag-color-4-border: #1a2d40;
 
 }

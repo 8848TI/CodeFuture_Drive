@@ -18,52 +18,51 @@ const dropdownNavItems = [
   {
     title: '前端',
     items: [
-      { text: 'HTML', to: '/' },
-      { text: "CSS", to: '' },
-      { text: "JavaScript", to: '' },
-      { text: "NodeJS", to: '' },
-      { text: "Vue2 + Vue3", to: '' },
+      { text: 'HTML', to: '/blog/HTML' },
+      { text: "CSS", to: '/blog/CSS' },
+      { text: "JavaScript", to: '/blog/javascript' },
+      { text: "NodeJS", to: '/blog/nodejs' },
+      { text: "Vue2 + Vue3", to: '/blog/vue' },
       { divider: true }, // 分割线
-      { text: "Canvas", to: '' },
+      { text: "Canvas", to: '/blog/canvas' },
     ],
   },
   {
     title: "后端",
     items: [
-      { text: "C语言", to: '' },
-      { text: "Java", to: '' },
+      { text: "C语言", to: '/blog/c' },
+      { text: "Java", to: '/blog/java' },
     ],
   },
   {
     title: "移动端",
     items: [
-      { text: "安卓", to: '' },
-      { text: "鸿蒙", to: '' },
-      { text: "跨平台", to: '' },
+      { text: "安卓", to: '/blog/android' },
+      { text: "鸿蒙", to: '/blog/harmonyos' },
+      { text: "跨平台", to: '/blog/uniapp' },
     ],
   },
   {
     title: "开发工具",
     items: [
-      { text: "git版本管理", to: '' },
-      { text: "Typora", to: '' },
-      { text: "Everything", to: '' },
+      { text: "git版本管理", to: '/blog/git' },
+      { text: "Everything", to: '/blog/everything' },
     ],
   },
   {
     title: "其它",
     items: [
-      { text: "MySQL", to: '' },
-      { text: "数据结构与算法", to: '' },
-      { text: "FISCO-BOCS", to: '' },
-      { text: "摸鱼", to: '' },
+      { text: "MySQL", to: '/blog/mysql' },
+      { text: "数据结构与算法", to: '/blog/' },
+      { text: "区块链", to: '/blog/blockchain' },
+      { text: "摸鱼", to: '/blog/slackoff' },
     ],
   },
   {
     title: '在线技术文档',
     items: [
-      { text: '菜鸟教程', to: '' },
-      { text: 'WeBASE手册', to: '' },
+      { text: '菜鸟教程', to: 'https://www.runoob.com/' },
+      { text: 'WeBASE手册', to: 'https://webasedoc.readthedocs.io/' },
     ],
   },
 ]
@@ -123,8 +122,12 @@ const userInfoLogo = [
               </router-link>
               <ul class="dropdown-menu">
                 <li v-for="subItem in dropdown.items" :key="subItem.text">
+                  <!-- 修改部分 -->
+                  <a v-if="subItem.to && subItem.to.startsWith('http')" class="dropdown-item" :href="subItem.to" target="_blank" rel="noopener noreferrer">
+                    {{ subItem.text }}
+                  </a>
                   <router-link
-                    v-if="subItem.divider !== true"
+                    v-else-if="subItem.divider !== true"
                     class="dropdown-item"
                     :to="subItem.to"
                   >

@@ -36,7 +36,6 @@ html, body {
   footer {
     background-color: var(--theme-second-bg) !important;
     box-shadow: 0 -1px 6px rgba(0, 0, 0, .1);
-
   }
 
   .row {

@@ -1,7 +1,8 @@
 <script setup>
 import { ref, onMounted, watch } from 'vue'
-import { RouterView, useRoute } from 'vue-router'
+import { RouterView, useRoute, useRouter } from 'vue-router'
 const route = useRoute()
+const router = useRouter()
 import { useUserStore } from '@/stores'
 const userStore = useUserStore()
 import { articleGetUserArticle } from '@/api/articleService'
@@ -54,7 +55,12 @@ const getUserArticles = async () => {
 }
 getUserArticles()
 
-</script>
+// 跳转到文章详情页
+const goToArticleDetail = (id) => {
+  router.push({ name: 'ArticleDetail', params: { id } })
+}
+
+</script> 
 
 <template>
   <div id="user">
@@ -79,6 +85,7 @@ getUserArticles()
           :date="item.created_at"
           :excerpt="item.description"
           imageUrl="../../assets/images/07.jpg"
+          @click="goToArticleDetail(item.id)"
         />
         <!-- 分页功能开始 -->
         <BlogPagination class="col-lg-9"/>
