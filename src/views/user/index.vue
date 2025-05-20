@@ -21,13 +21,13 @@ const blogRoute = useBlogRoute()
 const TopBg = ref(null)
 const changeBg = () => {
   if (themeStore.theme === 'dark') {
-    TopBg.value.style.background = 'url(src/assets/images/b2.jpeg) no-repeat center'
+    themeStore.setBgUrl('src/assets/images/b2.jpeg')
   } else {
-    TopBg.value.style.background = 'url(src/assets/images/b1.jpeg) no-repeat center'
+    themeStore.setBgUrl('src/assets/images/b1.jpeg')
   }
+  TopBg.value.style.background = `url(${themeStore.getBgUrl()}) no-repeat center`
 }
 onMounted(() => {
-  changeBg()
   watch(() => themeStore.theme, changeBg)
 })
 
@@ -35,11 +35,6 @@ onMounted(() => {
 watch(() => route.fullPath, (newPath) => {
   newPath === '/user' ? blogRoute.setFlag(false) : blogRoute.setFlag(true)
 })
-function setFlag(it) {
-  it === '/user' ? blogRoute.setFlag(false) : blogRoute.setFlag(true)
-}
-
-setFlag(route.fullPath)
 
 // 获取用户的文章
 const userArticles = ref([])

@@ -1,7 +1,8 @@
 <script setup>
 import { ref } from 'vue'
-import { useUserStore } from '@/stores'
+import { useUserStore, useThemeStore } from '@/stores'
 const userStore = useUserStore()
+const themeStore = useThemeStore()
 
 // 空图片
 import Avatar from '@/assets/images/avatar.png'

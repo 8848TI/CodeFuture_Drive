@@ -46,6 +46,9 @@
   --tag-color-4-text: #55aaee;
   --tag-color-4-border: #c6def2;
 
+  /* loading加载动画 */
+  --loading-color: #5086a1;
+
 }
 
 /* 深色主题 */
@@ -96,4 +99,6 @@ html[data-theme="dark"] {
   --tag-color-4-text: #55aaee;
   --tag-color-4-border: #1a2d40;
 
+  /* loading加载动画 */
+  --loading-color: #ede6e6;
 }

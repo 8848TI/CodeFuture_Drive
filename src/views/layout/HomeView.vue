@@ -21,7 +21,7 @@ const goToGithub = () => {
     </div>
   </div>
   <!-- 页脚 -->
-  <FooterInfo style="height: 20%;"/>
+  <!-- <FooterInfo style="height: 20%;"/> -->
 </template>
 
 <style scoped lang="scss">

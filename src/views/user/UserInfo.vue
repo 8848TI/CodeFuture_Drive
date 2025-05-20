@@ -3,6 +3,8 @@ import BaseInfo from './PageContainer/BaseInfo.vue'
 import ChangeAvatar from './PageContainer/ChangeAvatar.vue'
 import ResetPassword from './PageContainer/ResetPassword.vue'
 import SliderNavbar from './SliderNavbar.vue'
+
+
 </script>
 
 <template>

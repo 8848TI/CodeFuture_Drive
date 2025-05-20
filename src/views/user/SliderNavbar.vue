@@ -1,11 +1,10 @@
 <script setup>
-import { shallowRef, onMounted, ref } from 'vue'
-import { useThemeStore } from '@/stores'
+import { shallowRef, onMounted, ref, watch } from 'vue'
 import { Sunny, Moon } from '@element-plus/icons-vue'
 import { Top } from '@element-plus/icons-vue'
 import { useRouter } from 'vue-router'
 const router = useRouter()
-import { useUserStore } from '@/stores'
+import { useUserStore, useThemeStore } from '@/stores'
 const userStore = useUserStore()
 
 const size = shallowRef(25)
@@ -23,6 +22,18 @@ const themeSwitch = () => {
     themeIcon.value = Sunny
   }
 }
+
+// 监听主题变化，改变背景图
+const changeBg = () => {
+  if (theme.theme === 'dark') {
+    theme.setBgUrl('src/assets/images/b2.jpeg')
+  } else {
+    theme.setBgUrl('src/assets/images/b1.jpeg')
+  }
+}
+onMounted(() => {
+  watch(() => theme.theme, changeBg)
+})
 
 // 在组件挂载时，根据当前主题初始化图标
 onMounted(() => {
@@ -93,6 +104,15 @@ const leave = () => {
         justify-content: center;
         align-items: center;
         line-height: 50px;
+        box-shadow: 1px 1px 2px var(--theme-card-highlight);
+        transition: all .5s ease;
+
+      }
+
+      li:hover {
+        cursor: pointer;
+        background-color: var(--theme-card-highlight);
+        transform: scale(1.1);
       }
     }
 }

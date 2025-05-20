@@ -16,8 +16,19 @@ export const useThemeStore = defineStore('theme', () => {
     document.documentElement.dataset.theme = theme.value
     localStorage.setItem(KEY, theme.value)
   })
+  // 背景图地址
+  const bgUrl = ref('src/assets/images/b1.jpeg')
+  const setBgUrl = (e) => {
+    bgUrl.value = e
+  }
+  const getBgUrl = () => {
+    return bgUrl.value
+  }
   return {
     theme,
-    toggleTheme
+    toggleTheme,
+    bgUrl,
+    setBgUrl,
+    getBgUrl
   }
 })

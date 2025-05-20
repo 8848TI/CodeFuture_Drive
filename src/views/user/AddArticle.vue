@@ -50,13 +50,40 @@ onMounted(() => {
   vditor.value = new Vditor('vditor',{
     height: '95vh',
     width: '100vw',
-    // 添加主题
-    theme: {
-      current: 'dark' // 或者 'light'
+    preview: {
+      // 代码高亮
+      hljs: {
+        lineNumber: true
+      },
+      markdown: {
+        toc: true
+      },
+      // 主题
+      theme: {
+        current: 'light',
+      }
     },
-    // 内容主题
-    contentTheme: {
-      current: 'dark' // 或者 'light'
+    // 上传图片
+    upload: {
+      url: 'http://127.0.0.1:3007/article/tempImg', // 后端接口地址
+      fileName: 'temp_img', // 上传的文件字段名
+      maxSize: 10 * 1024 * 1024, // 最大文件大小，单位为字节，这里设置为 10MB
+
+      accept: {
+        'image/*': 'jpg,jpeg,png,gif,webp', // 允许上传的图片格式
+      },
+      // 上传成功后的回调函数
+      handler: (response) => {
+        console.log('response:' + response.status) // 打印后端返回的响应数据，用于调试和错误检查
+        // 插入图片到光标位置
+        if (response.status) {
+          const imgUrl = response.data.url // 假设后端返回的图片 URL 字段名为 'url'
+          vditor.value.insertValue(`![图片](${imgUrl})`) // 插入图片到光标位置
+        } else {
+          ElMessage.error('上传失败') // 显示上传失败的消息
+          console.error('上传失败:', response.message) // 打印错误信息
+        }
+      }
     }
   })
 })

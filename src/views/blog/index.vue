@@ -149,7 +149,7 @@ const goToArticleDetail = (id) => {
     </main>
   </div>
   <!-- 页脚 -->
-  <FooterInfo />
+  <!-- <FooterInfo /> -->
 </template>
 
 <style scoped lang="scss">
