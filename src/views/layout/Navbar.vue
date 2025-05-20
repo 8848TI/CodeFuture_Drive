@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/index'
 import UserInfoLogo from '@/components/UserInfoLogo.vue'
@@ -83,7 +83,77 @@ const userInfoLogo = [
   { text: '我的文章', to: '/user' }
 ]
 
+// 模拟搜索数据
+const mockData = [
+  { id: 1, title: 'Vue 3 入门教程' },
+  { id: 2, title: 'React 实战项目' },
+  { id: 3, title: 'JavaScript 高级特性' },
+  { id: 4, title: 'Node.js 后端开发' },
+  { id: 5, title: 'HTML5 新特性详解' },
+  { id: 6, title: 'CSS3 动画效果' },
+  { id: 7, title: 'Vue 3 状态管理' },
+  { id: 8, title: 'React 路由配置' },
+]
 
+// 控制搜索框显示状态
+const showSearch = ref(false)
+// 搜索关键词
+const searchKeyword = ref('')
+// 当前选中的搜索结果索引
+const selectedIndex = ref(-1)
+
+// 实时搜索结果，显示所有匹配结果
+const searchResults = computed(() => {
+  if (!searchKeyword.value) return []
+  return mockData.filter(item => item.title.toLowerCase().includes(searchKeyword.value.toLowerCase()))
+})
+
+// 清空搜索内容
+const clearSearch = () => {
+  searchKeyword.value = ''
+  selectedIndex.value = -1
+}
+
+// 执行搜索的函数
+const performSearch = () => {
+  if (selectedIndex.value > -1) {
+    const selectedResult = searchResults.value[selectedIndex.value]
+    console.log('跳转至:', selectedResult.title)
+    // 这里可以添加跳转逻辑
+    showSearch.value = false
+  }
+}
+
+// 高亮搜索词
+const highlightKeyword = (text) => {
+  if (!searchKeyword.value) return text
+  const regex = new RegExp(searchKeyword.value, 'gi')
+  return text.replace(regex, match => `<span class="highlight">${match}</span>`)
+}
+
+// 处理键盘事件
+const handleKeyDown = (e) => {
+  if (e.key === 'ArrowDown') {
+    e.preventDefault()
+    selectedIndex.value = (selectedIndex.value + 1) % searchResults.value.length
+  } else if (e.key === 'ArrowUp') {
+    e.preventDefault()
+    selectedIndex.value = (selectedIndex.value - 1 + searchResults.value.length) % searchResults.value.length
+  } else if (e.key === 'Enter') {
+    performSearch()
+  } else if (e.key === 'Escape') {
+    showSearch.value = false  
+  }
+}
+
+// 点击搜索框以外区域关闭搜索框
+const closeSearchOnOutsideClick = (event) => {
+  const searchBox = event.currentTarget.querySelector('.search-box')
+  if (!searchBox.contains(event.target)) {
+    showSearch.value = false
+  }
+  clearSearch()
+}
 </script>
 
 <template>
@@ -122,7 +192,6 @@ const userInfoLogo = [
               </router-link>
               <ul class="dropdown-menu">
                 <li v-for="subItem in dropdown.items" :key="subItem.text">
-                  <!-- 修改部分 -->
                   <a v-if="subItem.to && subItem.to.startsWith('http')" class="dropdown-item" :href="subItem.to" target="_blank" rel="noopener noreferrer">
                     {{ subItem.text }}
                   </a>
@@ -155,17 +224,69 @@ const userInfoLogo = [
             </span>
           </label>
           <!-- 主题色切换结束 -->
-          <!-- 搜索表单 -->
-          <form class="d-flex" role="search">
-            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success" type="submit">Search</button>
-          </form>
+          <button 
+            @click="showSearch = true" 
+            class="btn btn-outline-secondary d-flex align-items-center search-btn"
+          >
+            <i class="bi bi-search me-2"></i>
+            <span>搜索</span>
+            <span class="ms-2 small">(快捷键: Ctrl + K)</span>
+          </button>
           <!-- 用户信息logo开始 -->
           <UserInfoLogo :arr = "userInfoLogo"/>
           <!-- 用户信息logo结束 -->
         </div>
       </div>
     </nav>
+    <!-- 搜索框 -->
+    <div v-if="showSearch" class="search-overlay" @click="closeSearchOnOutsideClick">
+      <div class="search-box" @keydown="handleKeyDown">
+        <!-- 搜索框样式 -->
+        <div class="input-group search-input-group">
+          <span class="input-group-text search-icon">
+            <i class="bi bi-search"></i>
+          </span>
+          <input 
+            v-model="searchKeyword"
+            type="text" 
+            class="form-control" 
+            placeholder="搜索文章..."
+            @input="performSearch"
+          />
+          <span 
+            v-if="searchKeyword.length > 0" 
+            class="input-group-text clear-icon" 
+            @click="clearSearch"
+          >
+            <i class="bi bi-x-circle"></i>
+          </span>
+        </div>
+        <!-- 搜索结果列表 -->
+        <div class="search-results" v-if="searchResults.length">
+          <ul>
+            <li
+              v-for="(result, index) in searchResults"
+              :key="result.id"
+              :class="{ 'selected': index === selectedIndex }"
+              @click="selectedIndex = index; performSearch()"
+              v-html="highlightKeyword(result.title)"
+            ></li>
+          </ul>
+        </div>
+        <!-- 操作提示 -->
+        <div class="search-tips">
+          <span>
+            <kbd><i class="bi bi-arrow-return-left"></i></kbd> 选择
+          </span>
+          <span>
+            <kbd>Esc</kbd> 关闭搜索
+          </span>
+          <span>
+            <kbd>↑</kbd> / <kbd>↓</kbd> 选择
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -211,6 +332,7 @@ const userInfoLogo = [
     // 使用 flex 布局，使子元素水平居中
     display: flex;
     justify-content: center;
+
     .container-fluid {
       // 设置最大宽度，避免内容过宽
       max-width: 1200px; 
@@ -224,6 +346,22 @@ const userInfoLogo = [
       li {
         a {
           color: var(--color-heading);
+        }
+        // 子菜单
+        ul {
+          background: var(--theme-second-bg);
+          box-shadow: 1px 1px 4px var(--theme-accent-color);
+          li {
+            a {
+            transition: all .5s;
+
+              color: var(--color-heading);
+              // 触碰子菜单时修改背景颜色
+              &:hover {
+                background-color: var(--search-highlight-bg);
+              }
+            }
+          }
         }
       }
     }
@@ -322,7 +460,113 @@ const userInfoLogo = [
       top: calc(50% - 10px);
     }
     // 主题色切换样式结束
-    
+
+  }
+}
+
+// 搜索框遮罩层样式
+.search-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* 让搜索框靠上 */
+  padding-top: 10%; /* 调整搜索框距离顶部的距离 */
+  z-index: 99;
+
+  // 搜索框样式
+  .search-box {   
+    background-color: var(--theme-second-bg);
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 60%; /* 调整搜索框宽度 */
+  }
+
+  input {
+    background-color: var(--theme-main-bg);
+    color: var(--color-heading);
+  }
+  input::placeholder {
+    color: var(--color-heading);
+  }
+
+  .search-results {
+    width: 100%;
+    // 计算 10 条结果的大致高度，可根据实际情况调整
+    max-height: calc(10 * (0.5rem + 1rem + 1px)); 
+    overflow-y: auto;
+    border-top: none;
+    margin-bottom: 1rem;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      margin-top: 10px;
+
+      li {
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+        border: 1px solid var(--search-border-color);
+        border-radius: 5px;
+        margin-bottom: 0.5rem;
+        transition: background-color 0.3s ease;
+        font-size: 1rem;
+        color: var(--color-heading);
+
+
+        &:hover {
+          background-color: var(--search-highlight-bg);
+          border-color: var(--search-border-highlight-color);
+        }
+
+        &.selected {
+          background-color: var(--theme-card-highlight);
+        }
+
+        .highlight {
+          background-color: yellow;
+          font-weight: bold;
+        }
+      }
+    }
+  }
+
+  .search-tips {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-heading);
+    margin-top: 10px;
+
+    kbd {
+      background-color: var(--color-heading);
+      color: var(--theme-second-bg);
+      padding: 0.1rem 0.4rem;
+      border-radius: 0.2rem;
+    }
+  }
+}
+
+.search-btn {
+  border-radius: 50rem;
+  padding: 0.375rem 1rem;
+  background-color: transparent; // 确保背景透明
+
+  // 悬停状态
+  &:hover {
+    background-color: transparent; // 保持背景透明
+    // border-color: darken(var(--color-heading), 20%) !important; // 加重边框颜色
+    border: 1px solid var(--color-heading)!important; // 加粗边框;
+    color: var(--color-heading); // 保持文字颜色
   }
 }
 </style>

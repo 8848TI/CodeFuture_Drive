@@ -46,9 +46,11 @@
   --tag-color-4-text: #55aaee;
   --tag-color-4-border: #c6def2;
 
-  /* loading加载动画 */
-  --loading-color: #5086a1;
+  --loading-color: #5086a1; /* loading加载动画 */
 
+  --search-border-color: #e2e2e3; /* 搜索框边框颜色 */
+  --search-border-highlight-color: #5086a1; /* 搜索栏边框高亮色 */
+  --search-highlight-bg: #f0f0f0; /* 搜索栏高亮背景色 */
 }
 
 /* 深色主题 */
@@ -99,6 +101,9 @@ html[data-theme="dark"] {
   --tag-color-4-text: #55aaee;
   --tag-color-4-border: #1a2d40;
 
-  /* loading加载动画 */
-  --loading-color: #ede6e6;
+  --loading-color: #ede6e6; /* loading加载动画 */
+
+  --search-border-color: #2e2e32; /* 搜索框边框颜色 */
+  --search-border-highlight-color: #8cccd5; /* 搜索栏边框高亮色 */
+  --search-highlight-bg: #151517; /* 搜索栏高亮背景色 */
 }

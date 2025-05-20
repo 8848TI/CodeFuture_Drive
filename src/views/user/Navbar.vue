@@ -60,8 +60,7 @@ const handleNavClick = (item) => {
         <router-link 
           :to="item.to" 
           :class="{ active: item.active }"
-          @click="handleNavClick(item)"
-        >
+          @click="handleNavClick(item)">
           {{ item.text }}
         </router-link>
       </li>
