@@ -10,31 +10,57 @@ const avatar = userStore.userInfo.avatar_path || Avatar
 
 
 // 普通导航项
-const normalNavItems = [
+const normalNavItems = ref([
   { text: '博客文章', to: '/user', active: true },
-  { text: '文章分类', to: '/user/personalarticel' },
+  { text: '文章标签', to: '/user/personalarticel' },
   { text: '修改信息', to: '/user/userinfo' },
   { text: '回到首页', to: '/home' },
-  { text: '退出登录', to: '/login' }
-];
+  { text: '离开', to: '/login' }
+])
 
 // 控制导航栏折叠状态
 const isNavCollapsed = ref(true);
 
 // 处理导航项点击事件，更新选中状态
 const handleNavClick = (item) => {
-  normalNavItems.forEach((navItem) => {
-    // 移除所有导航项的 active 类
-    navItem.active = false
-    // 找到当前点击的导航项，并设置其 active 为 true
-    if (navItem.text === item.text) {
-      navItem.active = true
-    }
-  })
-  if (item.text === '退出登录') {
+  // 重置所有导航项的 active 状态
+  normalNavItems.value.forEach((navItem) => {
+    navItem.active = false;
+  });
+  // 设置当前点击的导航项的 active 为 true
+  item.active = true;
+
+  if (item.text === '离开') {
     userStore.logout()
   }
 }
+
+const open = (e) => {
+  // 需要默认的提交事件
+  e.preventDefault()
+  ElMessageBox.confirm(
+    'proxy will permanently delete the file. Continue?',
+    'Warning',
+    {
+      confirmButtonText: 'OK',
+      cancelButtonText: 'Cancel',
+      type: 'warning',
+    }
+  )
+    .then(() => {
+      ElMessage({
+        type: 'success',
+        message: 'Delete completed',
+      })
+    })
+    .catch(() => {
+      ElMessage({
+        type: 'info',
+        message: 'Delete canceled',
+      })
+    })
+}
+
 </script>
 
 <template>
@@ -60,7 +86,11 @@ const handleNavClick = (item) => {
         <router-link 
           :to="item.to" 
           :class="{ active: item.active }"
-          @click="handleNavClick(item)">
+          @click="(e) => {
+            if (item.text === '回到首页') open(e)
+            handleNavClick(item)
+          }"
+        >
           {{ item.text }}
         </router-link>
       </li>
@@ -141,13 +171,21 @@ const handleNavClick = (item) => {
         text-decoration: none;
         color: var(--color-heading);
         transition: all 0.3s ease; 
+        padding: 5px;
       }
 
-      a.active {
-        color: var(--theme-accent-color); 
+      a:hover {
+        color: var(--theme-accent-color);
+        border-bottom: 4px solid var(--theme-accent-color);
+      }
+
+      .active {
+        color: var(--theme-accent-color);
+        border-bottom: 4px solid var(--theme-accent-color);
         font-weight: 700;
       }
     }
+
   }
 
   // 小屏幕下的样式

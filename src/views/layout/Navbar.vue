@@ -62,6 +62,7 @@ const dropdownNavItems = [
     title: '在线技术文档',
     items: [
       { text: '菜鸟教程', to: 'https://www.runoob.com/' },
+      { text: 'MDN手册', to: 'https://developer.mozilla.org/zh-CN/' },
       { text: 'WeBASE手册', to: 'https://webasedoc.readthedocs.io/' },
     ],
   },
@@ -533,7 +534,8 @@ const closeSearchOnOutsideClick = (event) => {
         }
 
         .highlight {
-          background-color: yellow;
+          background-color: blue;
+          color: white;
           font-weight: bold;
         }
       }

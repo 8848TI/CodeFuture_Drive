@@ -15,7 +15,6 @@ import {
 
 // 头部导航栏
 const handleCommand = async (key) => {
-  console.log(key === 'logout')
   if (key === 'logout') {
     // 退出操作
     await ElMessageBox.confirm('你确定退出吗', '温馨提示', {
@@ -29,6 +28,9 @@ const handleCommand = async (key) => {
     // 跳转到登录页
     router.push('/home')
 
+  } else if (key === 'home') {
+    // 回到首页操作
+    router.push('/home')
   } else {
     // 跳转操作
     router.push(`/admin/${key}`)
@@ -83,6 +85,7 @@ const handleCommand = async (key) => {
                     <!-- 折叠部分 -->
                     <template #dropdown>
                       <el-dropdown-menu>
+                        <el-dropdown-item command="home" :icon="HomeFilled">回到首页</el-dropdown-item>
                         <el-dropdown-item command="blogmanagement" :icon="Collection">文章管理</el-dropdown-item>
                         <el-dropdown-item command="categorymanagement" :icon="Grid">分类管理</el-dropdown-item>
                         <el-dropdown-item command="reviewsmanagement" :icon="Comment">评论管理</el-dropdown-item>
@@ -117,7 +120,8 @@ const handleCommand = async (key) => {
     }
   }
   .el-header {
-    background-color: #fff;
+    background-color: var(--theme-second-bg);
+    color: var(--color-text);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -125,7 +129,7 @@ const handleCommand = async (key) => {
       display: flex;
       align-items: center;
       .el-icon {
-        color: #999;
+        color: var(--icon-color);
         margin-left: 10px;
       }
 
@@ -140,7 +144,7 @@ const handleCommand = async (key) => {
     align-items: center;
     justify-content: center;
     font-size: 14px;
-    color: #666;
+    color: var(--color-text);
   }
 }
 </style>

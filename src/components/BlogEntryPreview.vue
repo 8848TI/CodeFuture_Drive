@@ -23,7 +23,9 @@ const props = defineProps({
     type: String,
     default: ''
   }
-});
+})
+
+console.log(props.imageUrl)
 </script>
 
 <template>

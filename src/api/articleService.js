@@ -1,8 +1,9 @@
 import request from "@/utils/request"
 
 // 获取用户文章
-export const articleGetUserArticle = () => {
-  return request.get('/article/list')
+export const articleGetUserArticle = (page, pageSize) => {
+  return request.get('/article/list', { params: { page, pageSize } })
+
 }
 
 // 添加文章

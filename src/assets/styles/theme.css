@@ -51,6 +51,14 @@
   --search-border-color: #e2e2e3; /* 搜索框边框颜色 */
   --search-border-highlight-color: #5086a1; /* 搜索栏边框高亮色 */
   --search-highlight-bg: #f0f0f0; /* 搜索栏高亮背景色 */
+
+  /* markdown 文章颜色 */
+  /* 表格奇数行背景 */
+  --table-odd-bg: #f6f6f7;
+  /* 表格偶数行背景 */
+  --table-even-bg: #fff;
+  /* 代码块背景色 */
+  --code-bg: #f6f6f7;
 }
 
 /* 深色主题 */
@@ -106,4 +114,12 @@ html[data-theme="dark"] {
   --search-border-color: #2e2e32; /* 搜索框边框颜色 */
   --search-border-highlight-color: #8cccd5; /* 搜索栏边框高亮色 */
   --search-highlight-bg: #151517; /* 搜索栏高亮背景色 */
+
+  /* markdown 文章颜色 */
+  /* 表格奇数行背景 */
+  --table-odd-bg: #202127;
+  /* 表格偶数行背景 */
+  --table-even-bg: #1b1b1f;
+    /* 代码块背景色 */
+    --code-bg: #6e707c;
 }

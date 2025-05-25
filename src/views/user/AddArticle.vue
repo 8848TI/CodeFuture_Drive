@@ -5,7 +5,6 @@ import { ref, onMounted } from 'vue'
 import { articleAddArticle } from '@/api/articleService'
 import { useRouter } from 'vue-router'
 import { ElMessage } from 'element-plus' // 引入 Element Plus 消息提示
-import DOMpurify from 'dompurify'
 
 // 初始化 Vditor 编辑器
 const vditor = ref()

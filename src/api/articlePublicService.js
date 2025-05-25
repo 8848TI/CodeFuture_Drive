@@ -2,8 +2,8 @@ import request from "@/utils/request"
 
 
 // 获取所有公用文章
-export const articleGetPublicAllArticle = () => {
-    return request.get('/public/articlelist')
+export const articleGetPublicAllArticle = (currentPage, pageSize) => {
+    return request.get('/public/articlelist', { params: { currentPage, pageSize }})
 }
 
 // 获取所有公有文章的标签

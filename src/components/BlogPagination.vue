@@ -1,22 +1,76 @@
 <script setup>
+import { defineEmits, defineProps, computed } from 'vue'
+const emits = defineEmits(['page-change'])
+const props = defineProps({// 定义组件的props
+  currentPage: { // 当前页码
+    type: Number,
+    default: 1
+  },
+  pageSize: { // 每页显示的数量
+    type: Number,
+    default: 10
+  },
+  total: { // 总数量
+    type: Number,
+    default: 100
+  },
+  maxVisiblePages: { // 最大可见页码数
+    type: Number,
+    default: 5
+  }
+})
+
+// 计算总页数
+const totalPages = computed(() => Math.ceil(props.total / props.pageSize))
+// 生成页码列表
+const pageNumbers = computed(() => {
+  const { currentPage, maxVisiblePages } = props
+  const total = totalPages.value
+  let start = Math.max(1, currentPage - Math.floor(maxVisiblePages / 2))
+  let end = start + maxVisiblePages - 1
+
+  if (end > total) {
+    end = total
+    start = Math.max(1, end - maxVisiblePages + 1)
+  }
+
+  return Array.from({ length: end - start + 1 }, (_, i) => start + i)
+})
+
+// 处理上一页逻辑
+const handlePrevPage = () => {
+  if (props.currentPage > 1) {
+    emits('page-change', props.currentPage - 1)
+  }
+}
+// 处理下一页逻辑
+const handleNextPage = () => {
+  if (props.currentPage < totalPages.value) {
+    emits('page-change', props.currentPage + 1)
+  }
+}
+// 处理页码点击逻辑
+const handlePageClick = (page) => {
+  emits('page-change', page)
+}
 
 </script>
 
 <template>
   <div id="pagination">
     <ul class="page-list">
-      <li class="material-icons page-btn page-btn-prev isClick">
+      <li class="material-icons page-btn page-btn-prev" :class="{ 'isClick': props.currentPage > 1 }" @click="handlePrevPage">
         <i class="bi bi-chevron-left"></i>
       </li>
-      <li class="page-number">1</li>
-      <li class="material-icons page-dot page-dot-prev"></li>
-      <li class="page-number">2</li>
-      <li class="page-number active">3</li>
-      <li class="page-number">4</li>
-      <li class="material-icons page-dot page-dot-next"></li>
-      <li class="page-number">5</li>
-      <li class="material-icons page-btn page-btn-next isClick">
-        <i class="bi bi-chevron-right isClick"></i>
+      <li v-if="pageNumbers[0] > 1" class="page-number" @click="handlePageClick(1)">1</li>
+      <li v-if="pageNumbers[0] > 2" class="material-icons page-dot page-dot-prev" @click="handlePageClick(pageNumbers[0] - 1)"></li>
+      <li v-for="page in pageNumbers" :key="page" class="page-number" :class="{ 'active': page === props.currentPage }" @click="handlePageClick(page)">
+        {{ page }}
+      </li>
+      <li v-if="pageNumbers[pageNumbers.length - 1] < totalPages - 1" class="material-icons page-dot page-dot-next" @click="handlePageClick(pageNumbers[pageNumbers.length - 1] + 1)"></li>
+      <li v-if="pageNumbers[pageNumbers.length - 1] < totalPages" class="page-number" @click="handlePageClick(totalPages)">{{ totalPages }}</li>
+      <li class="material-icons page-btn page-btn-next" :class="{ 'isClick': props.currentPage < totalPages }" @click="handleNextPage">
+        <i class="bi bi-chevron-right"></i>
       </li>
     </ul>
   </div>

@@ -263,6 +263,21 @@ onUnmounted(() => {
     oColumn.dispose()
   }
 });
+
+// 文章总数
+import { adminGetArticleCount, adminGetArticleCustomDateCount } from '@/api/adminService'
+const articleCount = ref(0) // 文章总数
+const monthlyArticleCount = ref(0) // 月新增文章数
+const getArticleState = async () => {
+  const res = await adminGetArticleCount()
+  articleCount.value = res.data.data.total
+  const ress = await adminGetArticleCustomDateCount()
+  // monthlyArticleCount.value = ress.data.data.total
+  monthlyArticleCount.value = ress.data.data[0].count
+}
+getArticleState()
+
+
 </script>
 
 <template>
@@ -271,14 +286,14 @@ onUnmounted(() => {
       <div class="row spannel_list">
         <div class="col-sm-3 col-xs-6">
           <div class="spannel">
-            <em>10015</em><span>篇</span>
+            <em>{{ articleCount }}</em><span>篇</span>
             <b>总文章数</b>
           </div>
         </div>
         <div class="col-sm-3 col-xs-6">
           <div class="spannel scolor01">
-            <em>123</em><span>篇</span>
-            <b>日新增文章数</b>
+            <em>{{ monthlyArticleCount }}</em><span>篇</span>
+            <b>月新增文章数</b>
           </div>
         </div>
         <div class="col-sm-3 col-xs-6">
@@ -290,7 +305,7 @@ onUnmounted(() => {
         <div class="col-sm-3 col-xs-6">
           <div class="spannel scolor03">
             <em>123</em><span>条</span>
-            <b>日新增评论数</b>
+            <b>月新增评论数</b>
           </div>
         </div>
       </div>
@@ -320,7 +335,7 @@ onUnmounted(() => {
     overflow:hidden;
     text-align:center;
     position:relative;
-    background-color: #fff;
+    background-color: var(--theme-second-bg);
     border:1px solid #e7e7e9;
     margin-bottom:20px;
 
@@ -370,8 +385,8 @@ onUnmounted(() => {
 .gragh_pannel{
   height:350px;
   border:1px solid #e7e7e9;
-  background-color: #fff!important; 
-  margin-bottom:20px;  
+  background-color: var(--theme-second-bg)!important; 
+  margin-bottom:20px;
 }
 
 .column_pannel{
@@ -379,6 +394,5 @@ onUnmounted(() => {
   width: 100%;
   height:400px;
   border:1px solid #e7e7e9;
-  background-color: #fff!important;   
 }
 </style>

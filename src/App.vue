@@ -5,14 +5,18 @@ import LoadingWrapper from '@/components/LoadingWrapper.vue'
 </script>
 
 <template>
-  <router-view v-slot="{ Component }">
+  <!-- <router-view v-slot="{ Component }">
     <LoadingWrapper/>
     <transition name="fade" mode="out-in" appear>
       <keep-alive>
         <component :is="Component" />
       </keep-alive>
     </transition>
-  </router-view>
+  </router-view> -->
+  <div id="app">
+    <LoadingWrapper/>
+    <RouterView/>
+  </div>
 </template>
 
 <style lang="scss" scoped>

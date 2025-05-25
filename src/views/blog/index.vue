@@ -1,6 +1,6 @@
 <script setup>
 import { RouterView,useRoute, useRouter } from 'vue-router'
-import { watch, ref } from 'vue'
+import { watch, ref, onMounted } from 'vue'
 
 import BlogEntryPreview from '@/components/BlogEntryPreview.vue'
 import BlogPagination from '@/components/BlogPagination.vue'
@@ -10,25 +10,39 @@ import FooterInfo from '../../components/FooterInfo.vue'
 import { useBlogRoute } from '@/stores/index'
 
 import { articleGetPublicAllArticle, articleGetPublicAllArticleTags } from '@/api/articlePublicService'
-import Categories from './Categories.vue'
 
 // 获取所有文章
 const articles = ref([])
+const currentPage = ref(1)
+const pageSize = ref(10)
+const total = ref(0)
 const getArticles = async () => {
-  const { data } = await articleGetPublicAllArticle()
+  const { data } = await articleGetPublicAllArticle(currentPage.value, pageSize.value)
+  total.value = data.total
+  // console.log(data.data[1].cover_url)
   if (data.status === 0) articles.value = data.data
   for (let i = 0; i < articles.value.length; i++) {
     articles.value[i].created_at = articles.value[i].created_at.split('T')[0]
   }
 }
-getArticles()
+// 调用函数获取文章
+onMounted(() => {
+  getArticles()
+})
+
+// 处理分页变化
+const handlePageChange = (page) => {
+  articles.value = [] // 清空文章列表，防止重复加载
+  currentPage.value = page
+  getArticles()
+}
 
 // 获取所有文章标签
 const typesCount = ref(0)
 const categoriesCount = ref(0)
 const archivesCount = ref(0)
 const getTypes = async () => {
-  const { data } = await articleGetPublicAllArticleTags()
+  const { data } = await articleGetPublicAllArticleTags(1,2)
   typesCount.value = data.data.length
 }
 getTypes()
@@ -54,7 +68,6 @@ const goToArticleDetail = (id) => {
   router.push({ name: 'ArticleDetail', params: { id } })
 }
 
-
 </script>
 
 <template>
@@ -70,11 +83,17 @@ const goToArticleDetail = (id) => {
             author="张三"
             :date="item.created_at"
             :excerpt="item.description"
-            :imageUrl="item.cover_image"
+            :imageUrl="item.cover_url"
             @click="goToArticleDetail(item.id)"
           />
           <!-- 分页功能开始 -->
-          <BlogPagination class="col-lg-9"/>
+          <BlogPagination
+            class="col-lg-9"
+            :currentPage="currentPage"
+            :pageSize="pageSize"
+            :total="total"
+            @page-change="handlePageChange"
+          />
           <!-- 分页功能结束 -->
         </div>
         <!-- 右侧固定栏开始 -->

@@ -61,6 +61,8 @@ const tagStyles = computed(() => {
 
 <style scoped lang="scss">
 #person-tags {
+  padding-bottom: 50px;
+
   .tags-container {
     padding: 20px;
     background-color: var(--theme-second-bg);

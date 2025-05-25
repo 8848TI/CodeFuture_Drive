@@ -38,17 +38,29 @@ watch(() => route.fullPath, (newPath) => {
 
 // 获取用户的文章
 const userArticles = ref([])
+const currentPage = ref(1)
+const pageSize = ref(1)
+const total = ref(0)
 const getUserArticles = async () => {
-  const res = await articleGetUserArticle()
+  const res = await articleGetUserArticle(currentPage.value, pageSize.value)
   if (res.data.status === 0) {
     userArticles.value = res.data.data
+    total.value = res.data.total
     // 将时间戳转换为日期格式 2025-01-01
     for (let i = 0; i < userArticles.value.length; i++) {
       userArticles.value[i].created_at = userArticles.value[i].created_at.split('T')[0]
     }
   }
 }
-getUserArticles()
+onMounted(() => {
+  getUserArticles()
+})
+// 处理分页变化
+const handlePageChange = (page) => {
+  userArticles.value = [] // 清空文章列表，防止重复加载
+  currentPage.value = page
+  getUserArticles()
+}
 
 // 跳转到文章详情页
 const goToArticleDetail = (id) => {
@@ -83,7 +95,12 @@ const goToArticleDetail = (id) => {
           @click="goToArticleDetail(item.id)"
         />
         <!-- 分页功能开始 -->
-        <BlogPagination class="col-lg-9"/>
+        <BlogPagination
+          class="col-lg-9"
+          :currentPage="currentPage"
+          :pageSize="pageSize"
+          :total="total"
+          @page-change="handlePageChange"/>
         <!-- 分页功能结束 -->
       </div>
       <!-- 右侧固定栏开始 -->
