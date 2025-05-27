@@ -14,6 +14,7 @@ onMounted(() => {
 const articleList = ref([])
 onMounted(async () => {
     const res = await articleGetArticleByTagName(route.params.tagName)
+    console.log(route.params.tagName)
     articleList.value = res.data.data
     for (let i = 0; i < articleList.value.length; i++) {
       articleList.value[i].created_at = articleList.value[i].created_at.split('T')[0]
@@ -23,6 +24,7 @@ onMounted(async () => {
 // 监听路由参数变化
 watch(() => route.params.tagName, async (newVal) => {
     const res = await articleGetArticleByTagName(newVal)
+    console.log(route.params.tagName)
     articleList.value = res.data.data
     title.value = route.params.tagName.charAt(0).toUpperCase() + route.params.tagName.slice(1)
     for (let i = 0; i < articleList.value.length; i++) {

@@ -28,7 +28,7 @@ export default defineConfig({
   server: {
     host: '0.0.0.0', // 监听所有 IP 地址，包括 LAN 和广域网 IP 地址
     // port: 8080, // 自定义端口号，例如 8080
-    open: true, // 自动打开浏览器
+    // open: true, // 自动打开浏览器
     cors: true // 允许跨域请求
   }
 })

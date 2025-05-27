@@ -3,7 +3,7 @@ import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { userLogin, userRegister } from '@/api/userService'
 import { useUserStore } from '@/stores/index'
-import { ElLoading } from 'element-plus'
+import { ElLoading, ElMessage } from 'element-plus'
 
 const router = useRouter()
 
@@ -61,14 +61,24 @@ const submitLoginForm = async (event) => {
       userStore.setRole(data.is_admin === 0 ? 'user' : 'admin')
       userStore.login()
       userStore.setToken(data.token)
-      console.log(userStore.userInfo)
+      ElMessage({
+        message: '登录成功',
+        type: 'success',
+      })
       router.push('/home')
     } else {
-      alert(data.msg || '登录失败，请检查用户名和密码')
+      ElMessage({
+        message: data.msg || '登录失败，请检查用户名和密码',
+        type: 'error',
+      })
     }
   } catch (error) {
     console.error('登录请求出错:', error)
     alert('登录请求出错，请稍后重试')
+    ElMessage({
+      message: '登录请求出错，请稍后重试',
+      type: 'error',
+    })
   }
 }
 
@@ -83,7 +93,11 @@ const submitRegisterForm = async (event) => {
   // 注册逻辑
   const res = await userRegister({ username: registerUsername.value, password: registerPassword.value })
   if (res.data.status === 0) {
-    alert(res.data.msg || '注册成功')
+    ElMessage({
+      message: '注册成功，请登录',
+      type: 'success',
+      duration: 3000
+    })
     // 清除表单
     registerUsername.value = ''
     registerPassword.value = ''
@@ -91,7 +105,11 @@ const submitRegisterForm = async (event) => {
     // 点击登录按钮，切换到登录界面
     loginBtn.value.click()
   } else {
-    alert(res.data.msg || '注册失败，请稍后重试')
+    ElMessage({
+      message: res.data.msg || '注册失败，请稍后重试',
+      type: 'error',
+      duration: 3000
+    })
   }
 }
 

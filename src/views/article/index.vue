@@ -62,8 +62,11 @@ onMounted(async () => {
 
 <style lang="scss" scoped>
 .article {
+  width: 1000px;
+  margin: 0 auto;
+
   .article-content {
-    width: 1000px;
+    width: 100%;
     margin: 0 auto;
   }
 }

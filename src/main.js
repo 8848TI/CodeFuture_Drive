@@ -9,6 +9,9 @@ import 'bootstrap/dist/js/bootstrap.bundle.min.js'
 // 引入bootstrap-icons样式文件
 import 'bootstrap-icons/font/bootstrap-icons.css'
 
+// 引入element-plus样式文件
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
 // 引入element-plus图标库
 import * as ElementPlusIconsVue from '@element-plus/icons-vue'
 
@@ -26,5 +29,6 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 
 app.use(pinia)
 app.use(router)
+app.use(ElementPlus)
 
 app.mount('#app')

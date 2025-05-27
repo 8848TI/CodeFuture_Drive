@@ -17,7 +17,10 @@ const currentPage = ref(1)
 const pageSize = ref(10)
 const total = ref(0)
 const getArticles = async () => {
+  console.log(currentPage.value)
+  console.log(pageSize.value)
   const { data } = await articleGetPublicAllArticle(currentPage.value, pageSize.value)
+  console.log(data)
   total.value = data.total
   // console.log(data.data[1].cover_url)
   if (data.status === 0) articles.value = data.data
