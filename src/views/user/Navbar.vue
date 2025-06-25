@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted, onBeforeUnmount } from 'vue'
 import { useUserStore, useThemeStore } from '@/stores'
 const userStore = useUserStore()
 const themeStore = useThemeStore()
@@ -7,7 +7,6 @@ const themeStore = useThemeStore()
 // 空图片
 import Avatar from '@/assets/images/avatar.png'
 const avatar = userStore.userInfo.avatar_path || Avatar
-
 
 // 普通导航项
 const normalNavItems = ref([
@@ -20,6 +19,36 @@ const normalNavItems = ref([
 
 // 控制导航栏折叠状态
 const isNavCollapsed = ref(true);
+
+// Ctrl+K 键盘事件处理
+const handleKeydown = (event) => {
+  // 检测 Ctrl+K 组合键
+  if (event.ctrlKey && event.key === 'k') {
+    event.preventDefault() // 阻止默认行为
+    console.log('Ctrl+K 快捷键被触发')
+    // 在这里添加你想要执行的功能
+    // 例如：打开搜索框、显示快捷键帮助等
+    handleCtrlKAction()
+  }
+}
+
+// Ctrl+K 快捷键触发的具体功能
+const handleCtrlKAction = () => {
+  // 这里可以根据需求实现具体功能
+  // 例如：
+  alert('Ctrl+K 快捷键被触发！')
+  // 或者打开搜索功能、显示帮助信息等
+}
+
+// 组件挂载时添加键盘事件监听
+onMounted(() => {
+  document.addEventListener('keydown', handleKeydown)
+})
+
+// 组件卸载时移除键盘事件监听
+onBeforeUnmount(() => {
+  document.removeEventListener('keydown', handleKeydown)
+})
 
 // 处理导航项点击事件，更新选中状态
 const handleNavClick = (item) => {
@@ -60,7 +89,6 @@ const open = (e) => {
       })
     })
 }
-
 </script>
 
 <template>

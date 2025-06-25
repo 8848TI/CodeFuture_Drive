@@ -4,3 +4,7 @@ import request from "@/utils/request"
 export const commentAddComment = (article_id, content) => {
     return request.post('/comment/addcomment', { article_id, content })
 }
+
+export const commentReplyComment = (id, parent_id, content) => {
+    return request.post('/comment/replycomment', { id, parent_id, content })
+}

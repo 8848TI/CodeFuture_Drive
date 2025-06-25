@@ -7,7 +7,6 @@ import { commentAddComment } from '@/api/commentService'
 import { ElMessage } from 'element-plus' // 导入 ElementPlus 组件库
 import TimeUtils from '@/utils/timeUtils' // 导入时间工具类
 
-
 // 发送评论
 const sendComment = async () => {
   const content = tx.value.value.trim() // 获取评论内容并去除空格
@@ -26,6 +25,7 @@ const sendComment = async () => {
     })
     // 清空评论框
     tx.value.value = ''
+    total.value = 0 // 清空字数统计
   } else {
     ElMessage({
       message: '评论发送失败', // 提示信息内容
@@ -33,6 +33,89 @@ const sendComment = async () => {
     })
   }
 }
+
+// 回复相关状态
+const replyingTo = ref(null) // 当前正在回复的评论ID
+const replyContent = ref('') // 回复内容
+const replyTotal = ref(0) // 回复字数统计
+const isReplyTotalVisible = ref(false) // 回复字数统计显示状态
+
+// 点击回复按钮
+const handleReply = (commentId) => {
+  if (replyingTo.value === commentId) {
+    // 如果点击的是同一个回复按钮，则取消回复
+    replyingTo.value = null
+    replyContent.value = ''
+    replyTotal.value = 0
+    isReplyTotalVisible.value = false
+  } else {
+    // 切换到新的回复
+    replyingTo.value = commentId
+    replyContent.value = ''
+    replyTotal.value = 0
+    isReplyTotalVisible.value = false
+  }
+}
+
+// 发送回复
+const sendReply = async (commentId) => {
+  const content = replyContent.value.trim()
+  if (!content) {
+    ElMessage({
+      message: '回复内容不能为空',
+      type: 'warning',
+    })
+    return
+  }
+  
+  // 这里可以调用回复接口，暂时使用评论接口
+  const res = await commentAddComment(route.params.id, content)
+  if (res.data.status === 0) {
+    ElMessage({
+      message: '回复发送成功，请等待审核',
+      type: 'success',
+    })
+    // 清空回复框并关闭回复状态
+    replyContent.value = ''
+    replyTotal.value = 0
+    replyingTo.value = null
+    isReplyTotalVisible.value = false
+  } else {
+    ElMessage({
+      message: '回复发送失败',
+      type: 'error',
+    })
+  }
+}
+
+// 回复输入框聚焦事件
+const handleReplyFocus = () => {
+  isReplyTotalVisible.value = true
+}
+
+// 回复输入框输入事件
+const handleReplyInput = (e) => {
+  const value = e.target.value
+  replyTotal.value = value.length
+  
+  // 字数限制逻辑
+  if (value.length > 200) {
+    e.target.value = value.slice(0, 200)
+    replyContent.value = value.slice(0, 200)
+    replyTotal.value = 200
+  } else {
+    replyContent.value = value
+  }
+}
+
+// 回复键盘事件处理
+const handleReplyKeydown = (e, commentId) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault()
+    sendReply(commentId)
+  }
+}
+
 // 键盘事件处理
 const handleKeydown = (e) => {
   if (e.key === 'Enter' && !e.shiftKey) { // 检测是否按下了 Enter 键且没有按下 Shift 键
@@ -81,7 +164,7 @@ const handleInput = (e) => {
   const value = e.target.value
   total.value = value.length
   
-  // 字数限制逻辑（可选）
+  // 字数限制逻辑
   if (value.length > 200) {
     e.target.value = value.slice(0, 200)
     total.value = 200
@@ -122,7 +205,34 @@ onBeforeUnmount(() => {
         <div class="info">
           <p class="name">{{ item.nickname }}</p>
           <p class="text">{{ item.content }}</p>
-          <p class="time">{{ item.created_at }}</p>
+          <p class="time">
+            {{ item.created_at }}
+            <span @click="handleReply(item.comment_id)" :class="{ active: replyingTo === item.comment_id }">回复</span>
+          </p>
+          
+          <!-- 回复输入框 -->
+          <div v-if="replyingTo === item.comment_id" class="reply-wrapper">
+            <i class="avatar">
+              <img src="../assets/images/avatar.png" alt="头像" />
+            </i>
+            <textarea 
+              v-model="replyContent"
+              @focus="handleReplyFocus"
+              @input="handleReplyInput"
+              @keydown="handleReplyKeydown($event, item.comment_id)"
+              placeholder="回复评论..."
+              rows="2"
+              maxlength="200"
+            ></textarea>
+            <button @click="sendReply(item.comment_id)">回复</button>
+          </div>
+          
+          <!-- 回复字数统计 -->
+          <div v-if="replyingTo === item.comment_id" class="reply-total-wrapper">
+            <span class="total" v-show="isReplyTotalVisible">
+              {{ replyTotal }}/200字
+            </span>
+          </div>
         </div>
       </div>
     </div>
@@ -202,19 +312,19 @@ onBeforeUnmount(() => {
       display: flex;
       margin: 10px 0;
       
-        .avatar {
-          width: 48px;
-          height: 48px;
-          border-radius: 50%;
-          overflow: hidden;
-          margin-right: 20px;
+      .avatar {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        overflow: hidden;
+        margin-right: 20px;
 
-          img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-          }
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
         }
+      }
 
       .info {
         flex: 1;
@@ -239,6 +349,87 @@ onBeforeUnmount(() => {
         .time {
           color: #999;
           font-size: 12px;
+
+          span {
+            cursor: pointer;
+            margin-left: 10px;
+            transition: color 0.3s;
+            
+            &:hover {
+              color: #00aeec;
+            }
+            
+            &.active {
+              color: #00aeec;
+              font-weight: bold;
+            }
+          }
+        }
+        
+        // 回复输入框样式
+        .reply-wrapper {
+          display: flex;
+          margin-top: 15px;
+          padding-left: 0;
+          
+          .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin-right: 15px;
+
+            img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+            }
+          }
+          
+          textarea {
+            outline: none;
+            border-color: transparent;
+            resize: none;
+            background: #f5f5f5;
+            border-radius: 4px;
+            flex: 1;
+            padding: 8px;
+            transition: all 0.5s;
+            height: 40px;
+            font-size: 14px;
+            
+            &:focus {
+              border-color: #e4e4e4;
+              background: #fff;
+              height: 50px;
+            }
+          }
+          
+          button {
+            background: #00aeec;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            margin-left: 10px;
+            width: 60px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 14px;
+          }
+        }
+        
+        // 回复字数统计样式
+        .reply-total-wrapper {
+          display: flex;
+          justify-content: flex-end;
+          margin-top: 5px;
+          padding-right: 70px;
+          
+          .total {
+            color: #999;
+            font-size: 12px;
+            margin: 0;
+          }
         }
       }
     }
@@ -250,6 +441,22 @@ onBeforeUnmount(() => {
     .wrapper {
       min-width: 200px;
       max-width: 400px;
+    }
+    
+    .list {
+      min-width: 200px;
+      max-width: 400px;
+      
+      .item .info .reply-wrapper {
+        .avatar {
+          width: 32px;
+          height: 32px;
+        }
+        
+        button {
+          width: 50px;
+        }
+      }
     }
   }
 }
